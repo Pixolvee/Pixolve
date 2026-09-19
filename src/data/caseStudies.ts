@@ -1,0 +1,5 @@
+export const caseStudies = [
+  { name: "KawanMart", category: "E-commerce platform", color: "from-[#ffe400] to-[#ffb700]", result: "+38% conversion", before: "Checkout 4 langkah", after: "Checkout 1 halaman", text: "Menyederhanakan funnel belanja dan dashboard operasional untuk brand FMCG nasional." },
+  { name: "Arunika Finance", category: "Mobile & data", color: "from-[#75a8ff] to-[#002365]", result: "-42% waktu laporan", before: "Data tersebar", after: "Insight real-time", text: "Membangun mobile app dan data layer terpadu untuk tim lapangan." },
+  { name: "Medika Prima", category: "Healthcare SaaS", color: "from-[#0e9f85] to-[#002365]", result: "99.9% uptime", before: "Manual follow-up", after: "Workflow otomatis", text: "Mendesain ulang alur pasien dan mengotomasi koordinasi antar-cabang." },
+];
