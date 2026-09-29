@@ -5,6 +5,9 @@ import MobileAppDevelopment from "@/pages/MobileDevelopments";
 import QaTesting from "@/pages/QA_Testing";
 import DataScience from "@/pages/data_sciense";
 import UiUxDesign from "@/pages/UX_Design";
+import BlogPost from "@/pages/BlogPost";
+import CaseStudyPage from "@/pages/CaseStudyPage";
+import ProjectsPage from "@/pages/ProjectsPage";
 
 // One <Route> per page in src/pages; BrowserRouter already wraps this in main.tsx.
 export default function App() {
@@ -16,6 +19,9 @@ export default function App() {
       <Route path="/layanan/qa-testing" element={<QaTesting />} />
       <Route path="/layanan/data-science" element={<DataScience />} />
       <Route path="/layanan/ui-ux-design" element={<UiUxDesign />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
+      <Route path="/portofolio/:slug" element={<CaseStudyPage />} />
+      <Route path="/portofolio" element={<ProjectsPage />} />
     </Routes>
   );
 }

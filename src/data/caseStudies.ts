@@ -1,5 +1,107 @@
-export const caseStudies = [
-  { name: "KawanMart", category: "E-commerce platform", color: "from-[#ffe400] to-[#ffb700]", result: "+38% conversion", before: "Checkout 4 langkah", after: "Checkout 1 halaman", text: "Menyederhanakan funnel belanja dan dashboard operasional untuk brand FMCG nasional." },
-  { name: "Arunika Finance", category: "Mobile & data", color: "from-[#75a8ff] to-[#002365]", result: "-42% waktu laporan", before: "Data tersebar", after: "Insight real-time", text: "Membangun mobile app dan data layer terpadu untuk tim lapangan." },
-  { name: "Medika Prima", category: "Healthcare SaaS", color: "from-[#0e9f85] to-[#002365]", result: "99.9% uptime", before: "Manual follow-up", after: "Workflow otomatis", text: "Mendesain ulang alur pasien dan mengotomasi koordinasi antar-cabang." },
+export interface CaseStudy {
+  slug: string;
+  name: string;
+  image?: string; // path dari folder public, WAJIB diawali "/" (contoh: "/images/x.jpg")
+  color: string;
+  result: string;
+  before: string;
+  after: string;
+  text: string;
+  year?: string;
+
+  // ---- Detail halaman proyek (semua opsional) ----
+  status?: string; // contoh: "Live (v1.3)"
+  type?: string; // contoh: "Desktop App"
+  tags?: string[];
+  about?: string[]; // satu string = satu paragraf
+  features?: string[]; // format "Judul: deskripsi" agar judul tampil tebal
+  techStack?: { label: string; items: string[] }[];
+  /** Gambar galeri di public/case-studies/. Yang gagal dimuat otomatis disembunyikan. */
+  gallery?: { src: string; alt: string }[];
+  demoUrl?: string;
+  githubUrl?: string;
+}
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "resto",
+    name: "Mobile Restaurant with Face Recognition",
+    image: "/Resto.png",
+    color: "from-[#ffe400] to-[#ffb700]",
+    result: "+38% conversion",
+    before: "Checkout 4 langkah",
+    after: "Checkout 1 halaman",
+    text: "A project focused on implementing face recognition technology for mobile restaurant management, enhancing customer experience and service efficiency. The system uses modern web technologies like Flutter, HTML, CSS, JavaScript, and PHP.",
+  },
+  {
+    slug: "arunika-finance",
+    name: "Top-up Sales",
+    image: "/Pulsa.png",
+    color: "from-[#75a8ff] to-[#002365]",
+    result: "-42% waktu laporan",
+    before: "Data tersebar",
+    after: "Insight real-time",
+    text: "A project focused on managing and processing mobile top-up sales efficiently, using modern web technologies such as HTML, CSS, and JavaScript.",
+  },
+  {
+    slug: "time-management",
+    name: "Study Time Management System (SIM)",
+    image: "/SIM.png",
+    color: "from-[#0e9f85] to-[#002365]",
+    result: "99.9% uptime",
+    before: "Manual follow-up",
+    after: "Workflow otomatis",
+    text: "A project focused on developing a system to manage and optimize study time, helping users track their learning schedules and improve productivity. The system uses modern technologies such as vue js, laravel.",
+  },
+  {
+    slug: "ticket-booking",
+    name: "Mobile Movie Ticket Booking System",
+    image: "/bioskop.png",
+    color: "from-[#5eead4] to-[#002365]",
+    // result/before/after/text di bawah saya turunkan dari deskripsi Anda, silakan sesuaikan
+    result: "40+ framework",
+    before: "Terminal Juggling",
+    after: "Satu dashboard",
+    text: "A project focused on developing a mobile application for booking movie tickets, integrating features like seat selection and payment options. The system utilizes modern web technologies such as Flutter.",
+    year: "2025",
+    status: "Live (v1.3)",
+    type: "Desktop App",
+    tags: ["Flutter", "Dart", "Desktop", "Process Management"],
+    about: [
+      'DevPulse adalah solusi modern untuk menghentikan "Terminal Juggling". Aplikasi desktop ini memungkinkan developer menjalankan berbagai project (React, Laravel, Flutter, dll) secara bersamaan dalam satu dashboard elegan.',
+      "Dilengkapi dengan auto-detect framework dan port manager, DevPulse memastikan workflow development tetap rapi, ringan (hanya 10MB), dan produktif. Built by a developer, for developers.",
+    ],
+    features: [
+      "Support 40+ Framework: React, Laravel, Django, Flutter, dll",
+      "Real-Time Monitoring: CPU, Memory, & Live Logs per project",
+      "Smart Script Management: Simpan & jalankan script dev/build/prod sekali klik",
+      "Port Manager: Visualisasi port yang sedang digunakan secara real-time",
+      "Ultra Lightweight: Hanya memakan ~10MB resource RAM",
+      "Zero Internet Requirement: Semua data diproses secara lokal & aman",
+    ],
+    techStack: [
+      { label: "Frontend", items: ["Flutter", "Dart"] },
+      { label: "Features", items: ["Process Runner", "Port Scanner", "System Tray"] },
+      { label: "Platform", items: ["Windows (v1.3)", "macOS & Linux (Coming Soon)"] },
+    ],
+    gallery: [
+      { src: "/case-studies/devpulse-1.webp", alt: "Dashboard utama DevPulse" },
+      { src: "/case-studies/devpulse-2.webp", alt: "Live logs dan monitoring per project" },
+      { src: "/case-studies/devpulse-3.webp", alt: "Port manager" },
+    ],
+    demoUrl: "https://devpulse-teal.vercel.app/",
+    githubUrl: "https://github.com/Zulkifli1409/dev_pulse/releases",
+  },
+   {
+    slug: "Donasi",
+    name: "Donation Website",
+    image: "/Donasi.png",
+    color: "from-[#ffe400] to-[#ffb700]",
+    result: "+38% conversion",
+    before: "Checkout 4 langkah",
+    after: "Checkout 1 halaman",
+    text: "A project focused on developing a web platform for online donations, allowing users to easily contribute to various causes and track their donations. The system utilizes modern web technologies such as HTML, CSS, Golang.",
+  },
 ];
+
+export const getCaseStudy = (slug: string) => caseStudies.find((c) => c.slug === slug);

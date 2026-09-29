@@ -1,3 +1,5 @@
+// src/components/Team.tsx
+
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { team } from "@/data/team";
@@ -15,7 +17,16 @@ export function Team() {
             <article key={person.name} className="group" data-testid={`team-card-${index + 1}`}>
               <div className="relative aspect-[4/4.2] overflow-hidden rounded-3xl bg-[#eef3f9]">
                 <img src={person.image} alt={person.name} className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0" />
-                <a href="#quote-form" className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-[#ffe400] text-[#002365]" aria-label={`LinkedIn ${person.name}`}><ExternalLink className="size-4" /></a>
+                {/* Ganti href="#quote-form" dengan href={person.portfolioUrl} */}
+                <a 
+                  href={person.portfolioUrl} // Gunakan properti portfolioUrl
+                  target="_blank" // Buka tautan di tab baru
+                  rel="noopener noreferrer" // Keamanan tambahan
+                  className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-[#ffe400] text-[#002365]" 
+                  aria-label={`Portofolio ${person.name}`} // Aria-label yang lebih deskriptif
+                >
+                  <ExternalLink className="size-4" />
+                </a>
               </div>
               <div className="mt-5 flex items-start justify-between gap-4">
                 <div><h3 className="font-bold text-[#002365]">{person.name}</h3><p className="mt-1 text-sm text-slate-500">{person.role}</p></div>

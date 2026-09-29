@@ -1,0 +1,11 @@
+.cs-ink { background: linear-gradient(140deg, #00102f 0%, #002365 100%); }
+.cs-accent-grad { background: linear-gradient(135deg, #0e9f85 0%, #14b8a6 100%); }
+.cs-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+.cs-shadow-soft { box-shadow: 0 6px 16px -6px rgba(0, 35, 101, 0.18); }
+.cs-shadow-card { box-shadow: 0 14px 34px -14px rgba(0, 35, 101, 0.22); }
+.cs-shadow-float { box-shadow: 0 34px 70px -24px rgba(0, 35, 101, 0.4); }
+.cs-no-scrollbar { scrollbar-width: none; }
+.cs-no-scrollbar::-webkit-scrollbar { display: none; }
+.cs-rise { animation: cs-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes cs-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rise { animation: none; } }

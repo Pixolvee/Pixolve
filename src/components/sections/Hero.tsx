@@ -13,14 +13,6 @@ export function Hero() {
             <a href="#quote-form" className="inline-flex items-center justify-center rounded-full bg-[#ffe400] px-6 py-4 text-sm font-bold text-[#00153d] transition-transform hover:-translate-y-1" data-testid="hero-consultation-cta">Mulai Konsultasi Gratis <MoveRight className="ml-2 size-4" /></a>
             <a href="#portofolio" className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-4 text-sm font-bold text-white hover:border-[#ffe400] hover:text-[#ffe400]" data-testid="hero-portfolio-cta">Eksplor Portofolio <ArrowDownRight className="ml-2 size-4" /></a>
           </div>
-          <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-6" data-testid="hero-trust-metrics">
-            {[['50+', 'proyek terkirim'], ['98%', 'client retention'], ['99.9%', 'uptime-ready']].map(([value, label]) => (
-              <div key={label} data-testid={`hero-metric-${label.replaceAll(" ", "-")}`}>
-                <p className="text-2xl font-extrabold text-[#ffe400]">{value}</p>
-                <p className="mt-1 text-xs text-blue-200">{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
         <div className="relative" data-testid="hero-product-visual">
           <div className="absolute -inset-4 rounded-[2rem] bg-[#ffe400]/10 blur-2xl" />
@@ -58,12 +50,6 @@ export function Hero() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 border-t border-white/10 px-5 py-5 text-xs text-blue-200 lg:px-8" data-testid="hero-tech-strip">
-        <span className="font-semibold text-white/80">Dipercaya untuk membangun:</span>
-        {["Fintech", "Healthcare", "Retail", "Logistics", "SaaS"].map((t) => (
-          <span key={t} className="rounded-full border border-white/15 px-3 py-1">{t}</span>
-        ))}
       </div>
     </section>
   );
