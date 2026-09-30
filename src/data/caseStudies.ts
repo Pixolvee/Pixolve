@@ -6,6 +6,8 @@ export interface CaseStudy {
   result: string;
   before: string;
   after: string;
+  beforeImage?: string;
+  afterImage?: string;
   text: string;
   year?: string;
 
@@ -31,6 +33,8 @@ export const caseStudies: CaseStudy[] = [
     result: "+38% conversion",
     before: "Checkout 4 langkah",
     after: "Checkout 1 halaman",
+    beforeImage: "/case-studies/Resto/resto-lama.jpeg",
+    afterImage: "/case-studies/Resto/resto-baru.jpeg",
     text: "A project focused on implementing face recognition technology for mobile restaurant management, enhancing customer experience and service efficiency. The system uses modern web technologies like Flutter, HTML, CSS, JavaScript, and PHP.",
   },
   {
@@ -41,6 +45,8 @@ export const caseStudies: CaseStudy[] = [
     result: "-42% waktu laporan",
     before: "Data tersebar",
     after: "Insight real-time",
+    beforeImage: "/case-studies/Pulsa/pulsa-lama.jpeg",
+    afterImage: "/case-studies/Pulsa/pulsa-baru.jpeg",
     text: "A project focused on managing and processing mobile top-up sales efficiently, using modern web technologies such as HTML, CSS, and JavaScript.",
   },
   {
@@ -51,6 +57,8 @@ export const caseStudies: CaseStudy[] = [
     result: "99.9% uptime",
     before: "Manual follow-up",
     after: "Workflow otomatis",
+    beforeImage: "/case-studies/SIM/SIM-lama.png",
+    afterImage: "/case-studies/SIM/SIM-baru.png",
     text: "A project focused on developing a system to manage and optimize study time, helping users track their learning schedules and improve productivity. The system uses modern technologies such as vue js, laravel.",
   },
   {
@@ -66,23 +74,12 @@ export const caseStudies: CaseStudy[] = [
     year: "2025",
     status: "Live (v1.3)",
     type: "Desktop App",
+    beforeImage: "/case-studies/Bioskop/bioskop-lama.png",
+    afterImage: "/case-studies/Bioskop/bioskop-baru.png",
     tags: ["Flutter", "Dart", "Desktop", "Process Management"],
     about: [
       'DevPulse adalah solusi modern untuk menghentikan "Terminal Juggling". Aplikasi desktop ini memungkinkan developer menjalankan berbagai project (React, Laravel, Flutter, dll) secara bersamaan dalam satu dashboard elegan.',
       "Dilengkapi dengan auto-detect framework dan port manager, DevPulse memastikan workflow development tetap rapi, ringan (hanya 10MB), dan produktif. Built by a developer, for developers.",
-    ],
-    features: [
-      "Support 40+ Framework: React, Laravel, Django, Flutter, dll",
-      "Real-Time Monitoring: CPU, Memory, & Live Logs per project",
-      "Smart Script Management: Simpan & jalankan script dev/build/prod sekali klik",
-      "Port Manager: Visualisasi port yang sedang digunakan secara real-time",
-      "Ultra Lightweight: Hanya memakan ~10MB resource RAM",
-      "Zero Internet Requirement: Semua data diproses secara lokal & aman",
-    ],
-    techStack: [
-      { label: "Frontend", items: ["Flutter", "Dart"] },
-      { label: "Features", items: ["Process Runner", "Port Scanner", "System Tray"] },
-      { label: "Platform", items: ["Windows (v1.3)", "macOS & Linux (Coming Soon)"] },
     ],
     gallery: [
       { src: "/case-studies/devpulse-1.webp", alt: "Dashboard utama DevPulse" },
