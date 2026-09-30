@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, ExternalLink, X,
-  Quote, Target, Lightbulb, TrendingUp, Calendar, Users, Layers, Share2,
-  Sparkles, ArrowRight, Building2, Clock,
+  ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, X,
+  Calendar, Layers, Share2,
+  ArrowRight, Building2,
 } from "lucide-react";
 import { caseStudies, getCaseStudy } from "@/data/caseStudies";
 import "@/styles/ase-study.css";
@@ -141,7 +141,7 @@ export default function CaseStudyPage() {
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState("tentang");
+  const [, setActiveSection] = useState("tentang");
   const scroller = useRef<HTMLDivElement>(null);
 
   const gallery = (study?.gallery ?? []).filter((g) => !failed[g.src]);
@@ -169,7 +169,7 @@ export default function CaseStudyPage() {
     const onProgress = () => {
       const h = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
-      for (const id of sections) {
+      for (const id of ["overview", "challenge", "solution", "results"]) {
         const el = document.getElementById(id);
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -218,8 +218,7 @@ export default function CaseStudyPage() {
   const tags = study.tags ?? [];
   const related = caseStudies.filter((c) => c.slug !== study.slug).slice(0, 3);
 
- const stats = ([["Status", study.status], ["Tahun", study.year], ["Tipe", study.type ?? study.category]] as [string, string | undefined][]).filter(([, v]) => v) as [string, string][];
-
+  const heroStats = ([["Status", study.status], ["Tahun", study.year], ["Tipe", study.type]] as [string, string | undefined][]).filter(([, v]) => v) as [string, string][];
   return (
     <main className="min-h-screen bg-white" data-testid="case-study-page">
       {/* Reading progress */}
@@ -248,9 +247,9 @@ export default function CaseStudyPage() {
                   <Calendar className="size-3" /> {study.year}
                 </span>
               )}
-              {study.category && (
+              {study.type && (
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white/80">
-                  <Layers className="size-3" /> {study.category}
+                  <Layers className="size-3" /> {study.type}
                 </span>
               )}
             </div>
@@ -258,9 +257,9 @@ export default function CaseStudyPage() {
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75">{study.text}</p>
 
             {/* Hero stats */}
-            {stats.length > 0 && (
+            {heroStats.length > 0 && (
               <div className="mt-12 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-2 lg:grid-cols-4" data-testid="case-hero-stats">
-                {stats.map(([label, value]) => (
+                {heroStats.map(([label, value]) => (
                   <div key={label}>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-white/50">{label}</p>
                     <p className="mt-2 text-xl font-bold text-white">{value}</p>
@@ -435,7 +434,7 @@ export default function CaseStudyPage() {
                   )}
                 </div>
                 <div className="p-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400">{r.category ?? "Proyek"}</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400">{r.type ?? "Proyek"}</p>
                   <h3 className="mt-2 text-xl font-bold text-[#002365] transition-colors group-hover:text-[#0e9f85]">{r.name}</h3>
                   <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{r.text}</p>
                   <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
