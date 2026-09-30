@@ -6,10 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 // Supervisor exports DISABLE_HOT_RELOAD=true when the platform sets ENABLE_RELOAD=false.
 const hotReloadDisabled = process.env.DISABLE_HOT_RELOAD === "true";
 
-// Visual Edits (x-* JSX tagging, overlay, /edit-file endpoint) is dev-server-only by
-// default (apply: serve); escape hatch mirrors DISABLE_HOT_RELOAD.
-const visualEditsDisabled = process.env.DISABLE_VISUAL_EDITS === "true";
-
 // Branded error overlay (build + runtime errors); escape hatch mirrors the two above.
 const emergentOverlayDisabled = process.env.DISABLE_EMERGENT_OVERLAY === "true";
 
