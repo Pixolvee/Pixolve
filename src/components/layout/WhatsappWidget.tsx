@@ -4,7 +4,7 @@ import { ArrowUpRight, MessageCircle, X } from "lucide-react";
 export function WhatsappWidget() {
   const [open, setOpen] = useState(false);
   const openWhatsapp = (message = "Halo Pixolve, saya ingin konsultasi tentang proyek digital.") => {
-    window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    window.open(`https://wa.me/6283848581998?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   };
 
   return (

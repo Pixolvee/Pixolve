@@ -16,10 +16,47 @@ export function QuoteForm() {
   const [quote, setQuote] = useState<QuoteRequestCreate>(initialQuote);
   const mutation = useMutation({
     mutationFn: (payload: QuoteRequestCreate) => apiPost<LeadSubmission>("/leads/quote", payload),
-    onSuccess: (result) => { toast.success(result.message); setQuote(initialQuote); },
-    onError: () => toast.error("Form belum terkirim. Silakan coba lagi beberapa saat."),
+    onSuccess: (result) => {
+      toast.success(result.message || "Kebutuhan Anda berhasil dikirim!");
+      setQuote(initialQuote);
+    },
+    onError: () => {
+      toast.success("Mengarahkan ke WhatsApp...");
+      setQuote(initialQuote);
+    },
   });
-  const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); mutation.mutate(quote); };
+
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const message = [
+      "Halo Pixolve, saya ingin mendiskusikan kebutuhan proyek baru.",
+      "",
+      "📋 *Detail Pengajuan:*",
+      `• *Nama Lengkap:* ${quote.full_name}`,
+      `• *Email Bisnis:* ${quote.email}`,
+      `• *Nomor WhatsApp:* ${quote.whatsapp}`,
+      `• *Nama Perusahaan:* ${quote.company}`,
+      `• *Fokus Layanan:* ${quote.service}`,
+      `• *Skala Proyek:* ${quote.project_scale}`,
+      `• *Estimasi Budget:* ${quote.budget_range}`,
+      `• *Target Mulai:* ${quote.deadline}`,
+      "",
+      "📝 *Deskripsi Kebutuhan:*",
+      quote.description,
+    ].join("\n");
+
+    const waUrl = `https://wa.me/6283848581998?text=${encodeURIComponent(message)}`;
+
+    // Simpan lead ke backend jika ada
+    mutation.mutate(quote);
+
+    // Arahkan ke WhatsApp
+    const newWindow = window.open(waUrl, "_blank", "noopener,noreferrer");
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      window.location.href = waUrl;
+    }
+  };
 
   return (
     <section id="quote-form" className="bg-[#ffe400] px-5 py-20 sm:py-28 lg:px-8" data-testid="quote-section">

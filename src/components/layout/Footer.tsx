@@ -1,3 +1,4 @@
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Clock3, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { BrandMark } from "@/components/ui/BrandMark";
 
@@ -10,14 +11,39 @@ const serviceLinks: Array<[string, string]> = [
 ];
 
 const companyLinks: Array<[string, string]> = [
-  ["Tentang Pixolve", "#tentang"],
-  ["Studi Kasus", "#portofolio"],
-  ["Tim & Karier", "#tim"],
-  ["Blog & Insight", "#blog"],
-  ["FAQ", "#faq"],
+  ["Tentang Pixolve", "/#tentang"],
+  ["Studi Kasus", "/#portofolio"],
+  ["Tim & Karier", "/#tim"],
+  ["Blog & Insight", "/#blog"],
+  ["FAQ", "/#faq"],
 ];
 
 export function Footer() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) {
+      return;
+    }
+
+    if (href.startsWith("/#") || href.startsWith("#")) {
+      e.preventDefault();
+      const hash = href.startsWith("/#") ? href.slice(1) : href;
+      const targetId = hash.replace("#", "");
+
+      if (location.pathname === "/") {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+        window.history.pushState(null, "", hash);
+      } else {
+        navigate(`/${hash}`);
+      }
+    }
+  };
+
   return (
     <footer className="bg-[#00102f] px-5 py-14 text-white lg:px-8" data-testid="site-footer">
       <div className="mx-auto max-w-7xl">
@@ -26,20 +52,47 @@ export function Footer() {
             <BrandMark light />
             <p className="mt-6 max-w-xs text-sm leading-7 text-blue-200">Startup software house & agensi teknologi untuk produk yang ingin tumbuh dengan fondasi yang kuat.</p>
             <div className="mt-7 flex gap-3">
-              <a href="#quote-form" className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]" aria-label="LinkedIn Pixolve"><ExternalLink className="size-4" /></a>
-              <a href="#quote-form" className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]" aria-label="Email Pixolve"><Mail className="size-4" /></a>
+              <a
+                href="/#quote-form"
+                onClick={(e) => handleSectionClick(e, "/#quote-form")}
+                className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]"
+                aria-label="LinkedIn Pixolve"
+              >
+                <ExternalLink className="size-4" />
+              </a>
+              <a
+                href="/#quote-form"
+                onClick={(e) => handleSectionClick(e, "/#quote-form")}
+                className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]"
+                aria-label="Email Pixolve"
+              >
+                <Mail className="size-4" />
+              </a>
             </div>
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Layanan</p>
             <div className="mt-5 space-y-3 text-sm text-blue-200">
-              {serviceLinks.map(([label, href]) => <a key={href} href={href} className="block hover:text-white">{label}</a>)}
+              {serviceLinks.map(([label, href]) => (
+                <Link key={href} to={href} className="block hover:text-white">
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Perusahaan</p>
             <div className="mt-5 space-y-3 text-sm text-blue-200">
-              {companyLinks.map(([label, href]) => <a key={href} href={href} className="block hover:text-white">{label}</a>)}
+              {companyLinks.map(([label, href]) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={(e) => handleSectionClick(e, href)}
+                  className="block hover:text-white"
+                >
+                  {label}
+                </a>
+              ))}
             </div>
           </div>
           <div>

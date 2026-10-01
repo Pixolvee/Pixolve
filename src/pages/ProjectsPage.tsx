@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import { caseStudies } from "@/data/caseStudies";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import "@/styles/ase-study.css";
 
 export default function ProjectsPage() {
@@ -15,6 +17,7 @@ export default function ProjectsPage() {
       {/* Navbar pill */}
       {/* TODO: ganti dengan Navbar dari components/layout jika ingin konsisten dengan beranda */}
       <div className="fixed inset-x-0 top-4 z-40 px-4">
+        <Header />
         <nav className="cs-shadow-card mx-auto flex max-w-6xl items-center justify-between rounded-full border border-slate-200/70 bg-white/80 px-5 py-3 backdrop-blur-xl">
           <Link to="/" className="text-lg font-bold tracking-tight text-[#002365]">Pixolve</Link>
           <Link to="/" className="inline-flex items-center gap-1.5 rounded-full bg-[#002365] px-4 py-2 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5" data-testid="projects-back-link">
@@ -54,6 +57,7 @@ export default function ProjectsPage() {
           </Link>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

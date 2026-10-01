@@ -47,7 +47,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body { margin: 0; font-family: var(--font-sans); background: var(--background); }
 ::selection { background: #ffe400; color: #00153d; }
 summary::-webkit-details-marker { display: none; }
