@@ -3,13 +3,13 @@ export interface CaseStudy {
   name: string;
   image?: string; // path dari folder public, WAJIB diawali "/" (contoh: "/images/x.jpg")
   color: string;
-  result: string;
-  before: string;
-  after: string;
   beforeImage?: string;
   afterImage?: string;
   text: string;
   year?: string;
+  result?: string;
+  before?: string;
+  after?: string;
 
   // ---- Detail halaman proyek (semua opsional) ----
   status?: string; // contoh: "Live (v1.3)"
@@ -30,9 +30,6 @@ export const caseStudies: CaseStudy[] = [
     name: "Mobile Restaurant with Face Recognition",
     image: "/Resto.png",
     color: "from-[#ffe400] to-[#ffb700]",
-    result: "+38% conversion",
-    before: "Checkout 4 langkah",
-    after: "Checkout 1 halaman",
     beforeImage: "/case-studies/Resto/resto-lama.jpeg",
     afterImage: "/case-studies/Resto/resto-baru.jpeg",
     text: "A project focused on implementing face recognition technology for mobile restaurant management, enhancing customer experience and service efficiency. The system uses modern web technologies like Flutter, HTML, CSS, JavaScript, and PHP.",
@@ -42,9 +39,6 @@ export const caseStudies: CaseStudy[] = [
     name: "Top-up Sales",
     image: "/Pulsa.png",
     color: "from-[#75a8ff] to-[#002365]",
-    result: "-42% waktu laporan",
-    before: "Data tersebar",
-    after: "Insight real-time",
     beforeImage: "/case-studies/Pulsa/pulsa-lama.jpeg",
     afterImage: "/case-studies/Pulsa/pulsa-baru.jpeg",
     text: "A project focused on managing and processing mobile top-up sales efficiently, using modern web technologies such as HTML, CSS, and JavaScript.",
@@ -54,9 +48,6 @@ export const caseStudies: CaseStudy[] = [
     name: "Study Time Management System (SIM)",
     image: "/SIM.png",
     color: "from-[#0e9f85] to-[#002365]",
-    result: "99.9% uptime",
-    before: "Manual follow-up",
-    after: "Workflow otomatis",
     beforeImage: "/case-studies/SIM/SIM-lama.png",
     afterImage: "/case-studies/SIM/SIM-baru.png",
     text: "A project focused on developing a system to manage and optimize study time, helping users track their learning schedules and improve productivity. The system uses modern technologies such as vue js, laravel.",
@@ -67,9 +58,6 @@ export const caseStudies: CaseStudy[] = [
     image: "/bioskop.png",
     color: "from-[#5eead4] to-[#002365]",
     // result/before/after/text di bawah saya turunkan dari deskripsi Anda, silakan sesuaikan
-    result: "40+ framework",
-    before: "Terminal Juggling",
-    after: "Satu dashboard",
     text: "A project focused on developing a mobile application for booking movie tickets, integrating features like seat selection and payment options. The system utilizes modern web technologies such as Flutter.",
     year: "2025",
     status: "Live (v1.3)",
@@ -94,9 +82,6 @@ export const caseStudies: CaseStudy[] = [
     name: "Donation Website",
     image: "/Donasi.png",
     color: "from-[#ffe400] to-[#ffb700]",
-    result: "+38% conversion",
-    before: "Checkout 4 langkah",
-    after: "Checkout 1 halaman",
     text: "A project focused on developing a web platform for online donations, allowing users to easily contribute to various causes and track their donations. The system utilizes modern web technologies such as HTML, CSS, Golang.",
   },
 ];

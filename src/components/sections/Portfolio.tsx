@@ -4,7 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import { caseStudies } from "@/data/caseStudies";
 
-// Jumlah proyek yang tampil di beranda (2 kartu per baris). Sisanya ada di halaman "Semua proyek".
+// Jumlah proyek yang tampil di beranda (4 kartu per baris di desktop). Sisanya ada di halaman "Semua proyek".
 const HOME_LIMIT = 4;
 
 export function Portfolio() {
@@ -19,9 +19,9 @@ export function Portfolio() {
           body="Beberapa contoh bagaimana pendekatan produk, engineering, dan data membantu partner kami bergerak lebih jauh."
         />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2" data-testid="portfolio-grid">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="portfolio-grid">
           {shown.map((item, index) => (
-            <ProjectCard key={item.slug} item={item} index={index} />
+            <ProjectCard key={item.slug} item={item} index={index} compact />
           ))}
         </div>
 

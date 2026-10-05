@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { Clock3, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import {ExternalLink, Mail, Phone } from "lucide-react";
 import { BrandMark } from "@/components/ui/BrandMark";
 
 const serviceLinks: Array<[string, string]> = [
@@ -98,10 +98,8 @@ export function Footer() {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Hubungi kami</p>
             <div className="mt-5 space-y-4 text-sm text-blue-200">
-              <p className="flex gap-3"><Mail className="mt-0.5 size-4 shrink-0 text-[#ffe400]" /> Pixolve@gmail.com</p>
+              <p className="flex gap-3"><Mail className="mt-0.5 size-4 shrink-0 text-[#ffe400]" /> Pixolvee@gmail.com</p>
               <p className="flex gap-3"><Phone className="mt-0.5 size-4 shrink-0 text-[#ffe400]" /> +62 895-2220-7908</p>
-              <p className="flex gap-3"><MapPin className="mt-0.5 size-4 shrink-0 text-[#ffe400]" /> Gedung Cyber 2, Lhokseumawe</p>
-              <p className="flex gap-3"><Clock3 className="mt-0.5 size-4 shrink-0 text-[#ffe400]" /> Senin–Jumat, 08.00–18.00 WIB</p>
             </div>
           </div>
         </div>

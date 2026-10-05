@@ -6,10 +6,9 @@ import { WhatsappWidget } from "@/components/layout/WhatsappWidget";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
 import { Portfolio } from "@/components/sections/Portfolio";
-import { Pricing } from "@/components/sections/Pricing";
 import { QuoteForm } from "@/components/sections/QuoteForm";
 import { Team } from "@/components/sections/Team";
-import { Faq } from "@/components/sections/Faq";
+// import { Faq } from "@/components/sections/Faq";
 import { Blog } from "@/components/sections/Blog";
 import { Newsletter } from "@/components/sections/Newsletter";
 
@@ -23,10 +22,9 @@ export default function Home() {
         <Blog />
         <Services />
         <Portfolio />
-        <Pricing />
-        <QuoteForm />
         <Team />
-        <Faq />
+        {/* <Faq /> */}
+        <QuoteForm />
         <Newsletter />
       </main>
       <Footer />

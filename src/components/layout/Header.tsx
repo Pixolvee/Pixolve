@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
-import { toast } from "sonner";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { services } from "@/data/services";
 
@@ -15,15 +14,8 @@ const navLinks: Array<[string, string]> = [
 
 export function Header() {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [language, setLanguage] = useState<"ID" | "EN">("ID");
   const location = useLocation();
   const navigate = useNavigate();
-
-  const toggleLanguage = () => {
-    const next = language === "ID" ? "EN" : "ID";
-    setLanguage(next);
-    toast.info(next === "EN" ? "Mode English sedang disiapkan untuk Pixolve." : "Mode Bahasa Indonesia aktif.");
-  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setMobileMenu(false);
@@ -90,7 +82,6 @@ export function Header() {
           </details>
         </nav>
         <div className="hidden items-center gap-3 lg:flex" data-testid="header-actions">
-          <button type="button" onClick={toggleLanguage} className="rounded-full border border-white/20 px-3 py-2 text-xs font-bold text-white hover:border-[#ffe400] hover:text-[#ffe400]" data-testid="language-switch-button">{language} <span className="text-white/40">|</span> {language === "ID" ? "EN" : "ID"}</button>
           <a
             href="/#quote-form"
             onClick={(e) => handleNavClick(e, "/#quote-form")}
