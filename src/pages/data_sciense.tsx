@@ -54,16 +54,6 @@ export default function DataScience() {
               Pipeline, dashboard, model prediktif, dan fitur berbasis AI — dibangun agar
               setiap keputusan bisnis punya dasar, bukan tebakan.
             </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-5">
-              <a
-                href="/#quote-form"
-                className="inline-flex items-center justify-center rounded-full bg-[#ffe400] px-7 py-4 text-sm font-bold text-[#00153d] transition-colors hover:bg-white"
-              >
-                Minta penawaran
-              </a>
-              <span className="text-sm text-blue-200">Mulai dari Rp 30 jt</span>
-            </div>
           </div>
 
           {/* Data pipeline mockup — menunjukkan alur kerja data secara konkret */}
