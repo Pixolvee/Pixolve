@@ -54,16 +54,6 @@ export default function MobileAppDevelopment() {
               Aplikasi Android & iOS dari satu basis kode, siap rilis ke Play Store dan
               App Store. Kami bangun untuk dipakai setiap hari, bukan hanya saat demo.
             </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-5">
-              <a
-                href="/#quote-form"
-                className="inline-flex items-center justify-center rounded-full bg-[#ffe400] px-7 py-4 text-sm font-bold text-[#00153d] transition-colors hover:bg-white"
-              >
-                Minta penawaran
-              </a>
-              <span className="text-sm text-blue-200">Mulai dari Rp 45 jt</span>
-            </div>
           </div>
 
           {/* Phone mockup — mengangkat konteks mobile dengan metrik kualitas nyata */}
