@@ -9,7 +9,7 @@ import { Portfolio } from "@/components/sections/Portfolio";
 import { QuoteForm } from "@/components/sections/QuoteForm";
 import { Team } from "@/components/sections/Team";
 // import { Faq } from "@/components/sections/Faq";
-import { Blog } from "@/components/sections/Blog";
+// import { Blog } from "@/components/sections/Blog";
 import { Newsletter } from "@/components/sections/Newsletter";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Blog />
+        {/* <Blog /> */}
         <Services />
         <Portfolio />
         <Team />

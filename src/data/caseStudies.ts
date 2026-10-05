@@ -1,3 +1,28 @@
+export interface PortfolioCategory {
+  id: string;
+  label: string;
+}
+
+export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
+  { id: "all", label: "Semua" },
+  { id: "web-development", label: "Web Development" },
+  { id: "mobile-app", label: "Mobile App" },
+  { id: "ui-ux", label: "UI/UX Design" },
+  { id: "data-science", label: "Data Science & AI" },
+];
+
+export function matchCategory(item: CaseStudy, categoryId: string): boolean {
+  if (categoryId === "all") return true;
+  const targetCategory = PORTFOLIO_CATEGORIES.find((c) => c.id === categoryId);
+  if (!targetCategory) return true;
+  const label = targetCategory.label.toLowerCase();
+
+  const primaryMatch = item.category?.toLowerCase() === label;
+  const multiMatch = item.categories?.some((c) => c.toLowerCase() === label);
+
+  return Boolean(primaryMatch || multiMatch);
+}
+
 export interface CaseStudy {
   slug: string;
   name: string;
@@ -10,6 +35,10 @@ export interface CaseStudy {
   result?: string;
   before?: string;
   after?: string;
+
+  // Kategori & Tipe
+  category?: string;
+  categories?: string[];
 
   // ---- Detail halaman proyek (semua opsional) ----
   status?: string; // contoh: "Live (v1.3)"
@@ -28,6 +57,9 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "resto",
     name: "Mobile Restaurant with Face Recognition",
+    category: "Mobile App",
+    categories: ["Mobile App", "UI/UX Design", "Data Science & AI"],
+    type: "Mobile & AI Application",
     image: "/Resto.png",
     color: "from-[#ffe400] to-[#ffb700]",
     beforeImage: "/case-studies/Resto/resto-lama.jpeg",
@@ -37,6 +69,9 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "arunika-finance",
     name: "Top-up Sales",
+    category: "Web Development",
+    categories: ["Web Development", "UI/UX Design"],
+    type: "Web Application",
     image: "/Pulsa.png",
     color: "from-[#75a8ff] to-[#002365]",
     beforeImage: "/case-studies/Pulsa/pulsa-lama.jpeg",
@@ -46,6 +81,9 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "time-management",
     name: "Study Time Management System (SIM)",
+    category: "Web Development",
+    categories: ["Web Development"],
+    type: "Web Application",
     image: "/SIM.png",
     color: "from-[#0e9f85] to-[#002365]",
     beforeImage: "/case-studies/SIM/SIM-lama.png",
@@ -55,13 +93,14 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "ticket-booking",
     name: "Mobile Movie Ticket Booking System",
+    category: "Mobile App",
+    categories: ["Mobile App", "UI/UX Design"],
+    type: "Mobile Application",
     image: "/bioskop.png",
     color: "from-[#5eead4] to-[#002365]",
-    // result/before/after/text di bawah saya turunkan dari deskripsi Anda, silakan sesuaikan
     text: "A project focused on developing a mobile application for booking movie tickets, integrating features like seat selection and payment options. The system utilizes modern web technologies such as Flutter.",
     year: "2025",
     status: "Live (v1.3)",
-    type: "Desktop App",
     beforeImage: "/case-studies/Bioskop/bioskop-lama.png",
     afterImage: "/case-studies/Bioskop/bioskop-baru.png",
     tags: ["Flutter", "Dart", "Desktop", "Process Management"],
@@ -77,9 +116,12 @@ export const caseStudies: CaseStudy[] = [
     demoUrl: "https://devpulse-teal.vercel.app/",
     githubUrl: "https://github.com/Zulkifli1409/dev_pulse/releases",
   },
-   {
+  {
     slug: "Donasi",
     name: "Donation Website",
+    category: "Web Development",
+    categories: ["Web Development", "UI/UX Design"],
+    type: "Web Platform",
     image: "/Donasi.png",
     color: "from-[#ffe400] to-[#ffb700]",
     text: "A project focused on developing a web platform for online donations, allowing users to easily contribute to various causes and track their donations. The system utilizes modern web technologies such as HTML, CSS, Golang.",

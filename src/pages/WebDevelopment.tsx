@@ -53,16 +53,6 @@ export default function WebDevelopment() {
               Website korporat, platform SaaS, dan dashboard internal, dibangun untuk tetap
               cepat dan mudah dirawat setelah proyek selesai — bukan hanya di hari peluncuran.
             </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-5">
-              <a
-                href="/#quote-form"
-                className="inline-flex items-center justify-center rounded-full bg-[#ffe400] px-7 py-4 text-sm font-bold text-[#00153d] transition-colors hover:bg-white"
-              >
-                Minta penawaran
-              </a>
-              <span className="text-sm text-blue-200">Mulai dari Rp 25 jt</span>
-            </div>
           </div>
 
           {/* Browser mockup */}

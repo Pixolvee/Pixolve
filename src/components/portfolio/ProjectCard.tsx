@@ -63,8 +63,19 @@ export function ProjectCard({
         <Cover src={item.image ?? item.gallery?.[0]?.src} name={item.name} color={item.color} />
       </div>
 
-      {/* Bodi kartu: judul, penjelasan, lalu ringkasan hasil */}
+      {/* Bodi kartu: kategori, judul, penjelasan */}
       <div className={`flex flex-1 flex-col ${compact ? "p-4 sm:p-5" : "p-6 sm:p-7"}`}>
+        {item.category && (
+          <div className="mb-2.5 flex items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full bg-[#002365]/5 font-bold uppercase tracking-wider text-[#002365] ${
+                compact ? "px-2 py-0.5 text-[9px]" : "px-2.5 py-1 text-[10px]"
+              }`}
+            >
+              {item.category}
+            </span>
+          </div>
+        )}
         <h3
           className={`font-black tracking-tight text-[#002365] transition-colors group-hover:text-[#0e9f85] ${
             compact

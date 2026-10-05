@@ -1,16 +1,45 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, ArrowUpRight, Sparkles } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
-import { caseStudies } from "@/data/caseStudies";
+import {
+  caseStudies,
+  PORTFOLIO_CATEGORIES,
+  matchCategory,
+} from "@/data/caseStudies";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import "@/styles/ase-study.css";
 
 export default function ProjectsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentCategory = searchParams.get("kategori") || "all";
+
+  const activeCategoryId = PORTFOLIO_CATEGORIES.some((c) => c.id === currentCategory)
+    ? currentCategory
+    : "all";
+
   useEffect(() => {
-    document.title = "Semua Proyek — Pixolve";
-  }, []);
+    const cat = PORTFOLIO_CATEGORIES.find((c) => c.id === activeCategoryId);
+    document.title =
+      activeCategoryId === "all"
+        ? "Semua Proyek — Pixolve"
+        : `${cat?.label ?? "Proyek"} — Portofolio Pixolve`;
+  }, [activeCategoryId]);
+
+  const handleSelectCategory = (id: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    if (id === "all") {
+      nextParams.delete("kategori");
+    } else {
+      nextParams.set("kategori", id);
+    }
+    setSearchParams(nextParams);
+  };
+
+  const filteredStudies = useMemo(() => {
+    return caseStudies.filter((item) => matchCategory(item, activeCategoryId));
+  }, [activeCategoryId]);
 
   return (
     <main className="min-h-screen bg-white" data-testid="projects-page">
@@ -38,12 +67,82 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Daftar proyek: 2 kartu per baris */}
-      <section className="bg-[#eef3f9] px-5 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2" data-testid="projects-grid">
-          {caseStudies.map((item, index) => (
-            <ProjectCard key={item.slug} item={item} index={index} />
-          ))}
+      {/* Daftar proyek: Filter Kategori & Grid */}
+      <section className="bg-[#eef3f9] px-5 py-16 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          {/* Category Filter Pills */}
+          <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-6">
+            <div
+              className="flex flex-wrap items-center gap-2 sm:gap-2.5"
+              data-testid="category-filter-list"
+            >
+              {PORTFOLIO_CATEGORIES.map((cat) => {
+                const isActive = activeCategoryId === cat.id;
+                const count = caseStudies.filter((item) => matchCategory(item, cat.id)).length;
+
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => handleSelectCategory(cat.id)}
+                    className={`group inline-flex items-center gap-2 rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#002365] text-white shadow-md shadow-[#002365]/20 ring-2 ring-[#002365]/20"
+                        : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-[#002365]"
+                    }`}
+                    data-testid={`category-filter-${cat.id}`}
+                  >
+                    <span>{cat.label}</span>
+                    <span
+                      className={`inline-flex items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
+                        isActive
+                          ? "bg-white/20 text-white"
+                          : "bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="text-xs sm:text-sm font-medium text-slate-500">
+              Menampilkan <span className="font-bold text-[#002365]">{filteredStudies.length}</span> dari {caseStudies.length} proyek
+            </p>
+          </div>
+
+          {/* Grid Proyek */}
+          {filteredStudies.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2" data-testid="projects-grid">
+              {filteredStudies.map((item, index) => (
+                <ProjectCard key={item.slug} item={item} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-3xl border border-slate-200 bg-white p-12 text-center">
+              <Sparkles className="mx-auto size-8 text-amber-400" />
+              <h3 className="mt-3 text-lg font-bold text-[#002365]">Belum ada proyek untuk kategori ini</h3>
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+                Kami terus menambahkan studi kasus terbaru. Punya kebutuhan proyek serupa? Diskusikan dengan tim kami.
+              </p>
+              <div className="mt-6 flex justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSelectCategory("all")}
+                  className="rounded-full bg-[#002365] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#002365]/90"
+                >
+                  Lihat semua proyek
+                </button>
+                <Link
+                  to="/#quote-form"
+                  className="rounded-full border border-slate-200 bg-white px-6 py-2.5 text-xs font-semibold text-[#002365] transition hover:bg-slate-50"
+                >
+                  Konsultasi proyek
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
