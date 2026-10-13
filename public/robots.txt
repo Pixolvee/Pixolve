@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pixolve-bay.vercel.app/sitemap.xml
