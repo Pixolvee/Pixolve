@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent as RMouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, X,
@@ -146,44 +146,33 @@ export default function CaseStudyPage() {
   const n = gallery.length;
   const markFailed = (src: string) => setFailed((f) => ({ ...f, [src]: true }));
 
+  const [visibleCards, setVisibleCards] = useState(1);
+  useEffect(() => {
+    const checkVisible = () => {
+      if (window.innerWidth >= 1024) setVisibleCards(3);
+      else if (window.innerWidth >= 640) setVisibleCards(2);
+      else setVisibleCards(1);
+    };
+    checkVisible();
+    window.addEventListener("resize", checkVisible);
+    return () => window.removeEventListener("resize", checkVisible);
+  }, []);
+
+  const maxActive = Math.max(0, n - visibleCards);
+
   const step = () => ((scroller.current?.firstElementChild as HTMLElement | null)?.offsetWidth ?? 0) + GAP;
   const onScroll = () => {
     const s = step();
-    if (s > GAP) setActive(Math.min(n - 1, Math.round((scroller.current?.scrollLeft ?? 0) / s)));
+    if (s > GAP) {
+      const idx = Math.round((scroller.current?.scrollLeft ?? 0) / s);
+      setActive(Math.min(maxActive, Math.max(0, idx)));
+    }
   };
-  const goTo = (i: number) => scroller.current?.scrollTo({ left: Math.max(0, Math.min(n - 1, i)) * step(), behavior: "smooth" });
-
-  // Tarik dengan mouse (desktop). Di layar sentuh, geser memakai scroll bawaan browser.
-  const dragRef = useRef({ down: false, x: 0, left: 0, moved: false });
-  const onMouseDown = (e: RMouseEvent<HTMLDivElement>) => {
-    const el = scroller.current;
-    if (!el || e.button !== 0) return;
-    dragRef.current = { down: true, x: e.clientX, left: el.scrollLeft, moved: false };
-    el.style.scrollSnapType = "none";
-    el.style.scrollBehavior = "auto";
+  const goTo = (i: number) => {
+    const target = Math.max(0, Math.min(maxActive, i));
+    setActive(target);
+    scroller.current?.scrollTo({ left: target * step(), behavior: "smooth" });
   };
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      const d = dragRef.current, el = scroller.current;
-      if (!d.down || !el) return;
-      const dx = e.clientX - d.x;
-      if (Math.abs(dx) > 5) d.moved = true;
-      el.scrollLeft = d.left - dx;
-    };
-    const up = () => {
-      const d = dragRef.current, el = scroller.current;
-      if (!d.down || !el) return;
-      d.down = false;
-      el.style.scrollSnapType = "";
-      el.style.scrollBehavior = "";
-      const s = step();
-      if (s > GAP) goTo(Math.round(el.scrollLeft / s)); // rapikan ke slide terdekat
-      setTimeout(() => { d.moved = false; }, 0); // klik setelah menarik tidak membuka lightbox
-    };
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", up);
-    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
-  }, [n]);
 
   // SEO
   useEffect(() => {
@@ -339,59 +328,93 @@ export default function CaseStudyPage() {
         </div>
       </section>
 
-      {/* GAMBAR PROYEK — bisa digeser (sentuh) atau ditarik (mouse) */}
+      {/* GAMBAR PROYEK */}
       {n > 0 && (
         <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-28" data-testid="case-gallery">
           <div className="mx-auto max-w-6xl px-5 lg:px-8">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="cs-eyebrow text-[#0e9f85]">Gambar proyek</p>
-                <h2 className="mt-4 text-3xl font-bold text-[#002365] sm:text-4xl">Lihat langsung tampilannya</h2>
-                {n > 1 && (
-                  <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500">
-                    <ArrowLeft className="size-3.5" /> Geser atau tarik gambar untuk melihat lainnya <ArrowRight className="size-3.5" />
-                  </p>
-                )}
-              </div>
+            <div>
+              <p className="cs-eyebrow text-[#0e9f85]">Gambar proyek</p>
+              <h2 className="mt-4 text-3xl font-bold text-[#002365] sm:text-4xl">Lihat langsung tampilannya</h2>
+            </div>
+
+            {/* Slider dengan tombol panah di samping kotak */}
+            <div className="relative mt-12">
+              {/* Tombol Panah Kiri */}
               {n > 1 && (
-                <div className="hidden gap-2 sm:flex">
-                  <button onClick={() => goTo(active - 1)} aria-label="Sebelumnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-white text-[#002365] transition-transform hover:-translate-y-0.5"><ChevronLeft className="size-5" /></button>
-                  <button onClick={() => goTo(active + 1)} aria-label="Berikutnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-[#002365] text-white transition-transform hover:-translate-y-0.5"><ChevronRight className="size-5" /></button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => goTo(active - 1)}
+                  disabled={active === 0}
+                  aria-label="Gambar sebelumnya"
+                  className="absolute -left-3 sm:-left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-20 grid size-11 sm:size-12 place-items-center rounded-full bg-white text-[#002365] shadow-xl shadow-slate-900/10 ring-1 ring-slate-900/10 transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-25 hover:bg-slate-50"
+                >
+                  <ChevronLeft className="size-5 sm:size-6" />
+                </button>
+              )}
+
+              {/* Scroller kartu yang sejajar dengan teks */}
+              <div
+                ref={scroller}
+                onScroll={onScroll}
+                className="cs-no-scrollbar flex select-none gap-5 overflow-x-hidden scroll-smooth pb-2"
+              >
+                {gallery.map((g, i) => (
+                  <button
+                    key={g.src}
+                    type="button"
+                    onClick={() => setOpen(i)}
+                    className="cs-shadow-card group w-full shrink-0 overflow-hidden rounded-3xl bg-white p-3 text-left transition-all hover:-translate-y-1 hover:shadow-2xl sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)]"
+                    data-testid={`case-image-${i + 1}`}
+                  >
+                    <div className="overflow-hidden rounded-2xl bg-slate-100">
+                      <img
+                        src={g.src}
+                        alt={g.alt}
+                        loading="lazy"
+                        draggable={false}
+                        onError={() => markFailed(g.src)}
+                        className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between px-2 pb-1 pt-4">
+                      <p className="truncate text-sm font-semibold text-[#002365]">{g.alt}</p>
+                      <span className="shrink-0 text-xs font-semibold text-[#0e9f85]">Perbesar</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Tombol Panah Kanan */}
+              {n > 1 && (
+                <button
+                  type="button"
+                  onClick={() => goTo(active + 1)}
+                  disabled={active >= maxActive}
+                  aria-label="Gambar berikutnya"
+                  className="absolute -right-3 sm:-right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-20 grid size-11 sm:size-12 place-items-center rounded-full bg-[#002365] text-white shadow-xl shadow-[#002365]/25 ring-1 ring-black/10 transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-25 hover:bg-[#001c52]"
+                >
+                  <ChevronRight className="size-5 sm:size-6" />
+                </button>
               )}
             </div>
-          </div>
 
-          <div
-            ref={scroller}
-            onScroll={onScroll}
-            onMouseDown={onMouseDown}
-            onDragStart={(e) => e.preventDefault()}
-            className="cs-no-scrollbar mt-12 flex cursor-grab select-none snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-4 active:cursor-grabbing lg:px-[max(2rem,calc((100vw-72rem)/2+2rem))]"
-          >
-            {gallery.map((g, i) => (
-              <button
-                key={g.src}
-                onClick={() => { if (!dragRef.current.moved) setOpen(i); }}
-                className="cs-shadow-card group w-[85%] shrink-0 snap-start overflow-hidden rounded-3xl bg-white p-3 text-left transition-all hover:-translate-y-1 hover:shadow-2xl sm:w-[46%] lg:w-[31%]"
-                data-testid={`case-image-${i + 1}`}
-              >
-                <div className="overflow-hidden rounded-2xl">
-                  <img src={g.src} alt={g.alt} loading="lazy" draggable={false} onError={() => markFailed(g.src)} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                </div>
-                <div className="flex items-center justify-between px-2 pb-1 pt-4">
-                  <p className="text-sm font-semibold text-[#002365]">{g.alt}</p>
-                  <span className="text-xs font-semibold text-[#0e9f85]">Perbesar</span>
-                </div>
-              </button>
-            ))}
+            {/* Dots Navigasi */}
+            {maxActive > 0 && (
+              <div className="mt-8 flex justify-center gap-2" data-testid="case-dots">
+                {Array.from({ length: maxActive + 1 }).map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => goTo(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === active ? "w-8 bg-[#002365]" : "w-2 bg-[#002365]/25 hover:bg-[#002365]/50"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-
-          {n > 1 && (
-            <div className="mt-8 flex justify-center gap-2" data-testid="case-dots">
-              {gallery.map((g, i) => <button key={g.src} onClick={() => goTo(i)} aria-label={`Slide ${i + 1}`} className={`h-2 rounded-full transition-all ${i === active ? "w-7 bg-[#002365]" : "w-2 bg-[#002365]/25"}`} />)}
-            </div>
-          )}
         </section>
       )}
 

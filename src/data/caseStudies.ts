@@ -62,6 +62,7 @@ export interface CaseStudy {
   slug: string;
   name: string;
   image?: string; // path dari folder public, WAJIB diawali "/" (contoh: "/images/x.jpg")
+  thumbnail?: string; // path gambar thumbnail WebP terkompresi untuk cover kartu
   color: string;
   beforeImage?: string;
   afterImage?: string;
@@ -101,6 +102,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Website Profil Rumah Makan dan Katalog Menu",
     image: "/Mockup Kari Kambing.png",
+    thumbnail: "/thumbnails/kari-kambing-cb-sp-ektreun.webp",
     color: "from-[#b7791f] to-[#26351d]",
     beforeImage: "/services/kari-kambing-before.png",
     afterImage: "/services/kari-kambing-after.png",
@@ -118,6 +120,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Platform Manajemen Usaha Terintegrasi",
     image: "/Mockup Smart UMKM.png",
+    thumbnail: "/thumbnails/smartumkm.webp",
     color: "from-[#7c3aed] to-[#4f46e5]",
     beforeImage: "/services/smartumkm-before.png",
     afterImage: "/services/smartumkm-after.png",
@@ -134,6 +137,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Website Profil Bisnis dan Katalog Produk",
     image: "/Mockup Kopi Gayo.png",
+    thumbnail: "/thumbnails/kopi-gayo.webp",
     color: "from-[#556044] to-[#303a20]",
     beforeImage: "/services/kopi-gayo-before.png",
     afterImage: "/services/kopi-gayo-after.png",
@@ -150,6 +154,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Platform Analisis dan Monitoring Saham",
     image: "/Mockup Sahamiq (2).png",
+    thumbnail: "/thumbnails/sahamiq.webp",
     color: "from-[#60a5fa] to-[#1d4ed8]",
     beforeImage: "/services/sahamiq-before.png",
     afterImage: "/services/sahamiq-after.png",
@@ -166,6 +171,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Aplikasi Chat dan Komunikasi Aman",
     image: "/Mockup Chatku (1).png",
+    thumbnail: "/thumbnails/chatku.webp",
     color: "from-[#ff6b35] to-[#ff9a5a]",
     beforeImage: "/services/chatku-before.png",
     afterImage: "/services/chatku-after.png",
@@ -182,6 +188,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     type: "Aplikasi Dashboard Interaktif",
     image: "/Mockup Monthlab.png",
+    thumbnail: "/thumbnails/dashboard-monitoring-desa.webp",
     color: "from-[#75a8ff] to-[#002365]",
     beforeImage: "/services/monthlab-before.png",
     afterImage: "/services/monthlab-after.png",
@@ -195,6 +202,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Web Development", "UI/UX Design"],
     type: "Website Patisserie dan Katalog Digital",
     image: "/Mocukup_Ulvoria_v2 (1).png",
+    thumbnail: "/thumbnails/baked-goods.webp",
     color: "from-[#75a8ff] to-[#002365]",
     beforeImage: "/services/baked-goods-before.png",
     afterImage: "/services/baked-goods-after.png",
@@ -207,6 +215,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Mobile App", "UI/UX Design", "Data Science & AI"],
     type: "Aplikasi Seluler & AI",
     image: "/Resto.png",
+    thumbnail: "/thumbnails/resto.webp",
     color: "from-[#ffe400] to-[#ffb700]",
     beforeImage: "/case-studies/Resto/resto-lama.jpeg",
     afterImage: "/case-studies/Resto/resto-baru.jpeg",
@@ -219,6 +228,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Web Development", "UI/UX Design"],
     type: "Aplikasi Web",
     image: "/Pulsa.png",
+    thumbnail: "/thumbnails/arunika-finance.webp",
     color: "from-[#75a8ff] to-[#002365]",
     beforeImage: "/case-studies/Pulsa/pulsa-lama.jpeg",
     afterImage: "/case-studies/Pulsa/pulsa-baru.jpeg",
@@ -231,6 +241,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Web Development"],
     type: "Aplikasi Web",
     image: "/SIM.png",
+    thumbnail: "/thumbnails/time-management.webp",
     color: "from-[#0e9f85] to-[#002365]",
     beforeImage: "/case-studies/SIM/SIM-lama.png",
     afterImage: "/case-studies/SIM/SIM-baru.png",
@@ -243,6 +254,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Mobile App", "UI/UX Design"],
     type: "Aplikasi Seluler",
     image: "/bioskop.png",
+    thumbnail: "/thumbnails/ticket-booking.webp",
     color: "from-[#5eead4] to-[#002365]",
     text: "Proyek ini berfokus pada pengembangan aplikasi seluler untuk pemesanan tiket film. Aplikasi ini menyediakan fitur pemilihan kursi dan pilihan pembayaran untuk memudahkan pengguna dalam memesan tiket. Sistem dikembangkan menggunakan teknologi Flutter.",
     year: "2025",
@@ -278,6 +290,7 @@ export const caseStudies: CaseStudy[] = [
     categories: ["Web Development", "UI/UX Design"],
     type: "Platform Web",
     image: "/Donasi.png",
+    thumbnail: "/thumbnails/Donasi.webp",
     color: "from-[#ffe400] to-[#ffb700]",
     text: "Proyek ini berfokus pada pengembangan platform web untuk donasi online. Platform ini memungkinkan pengguna memberikan sumbangan dengan mudah untuk berbagai tujuan serta memantau donasi yang telah mereka berikan. Sistem dikembangkan menggunakan teknologi web modern seperti HTML, CSS, dan Golang.",
   },

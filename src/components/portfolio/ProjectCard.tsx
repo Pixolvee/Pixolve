@@ -2,11 +2,23 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { CaseStudy } from "@/data/caseStudies";
 
-/** Gambar cover kartu. Jika tidak ada / gagal dimuat, tampil gradien sesuai warna proyek. */
-function Cover({ src, name, color }: { src?: string; name: string; color: string }) {
+/** Gambar cover kartu. Memprioritaskan thumbnail WebP terkompresi, fallback ke gambar asli jika gagal. */
+function Cover({
+  src,
+  thumbnail,
+  name,
+  color,
+}: {
+  src?: string;
+  thumbnail?: string;
+  name: string;
+  color: string;
+}) {
+  const initial = thumbnail || src;
+  const [currentSrc, setCurrentSrc] = useState<string | undefined>(initial);
   const [failed, setFailed] = useState(false);
 
-  if (!src || failed) {
+  if (!currentSrc || failed) {
     return (
       <div className={`absolute inset-0 bg-gradient-to-br ${color}`}>
         <div
@@ -23,11 +35,18 @@ function Cover({ src, name, color }: { src?: string; name: string; color: string
 
   return (
     <img
-      src={src}
+      src={currentSrc}
       alt={name}
       loading="lazy"
       decoding="async"
-      onError={() => setFailed(true)}
+      onError={() => {
+        // Jika thumbnail gagal dimuat, coba fallback ke src asli
+        if (currentSrc === thumbnail && src && thumbnail !== src) {
+          setCurrentSrc(src);
+        } else {
+          setFailed(true);
+        }
+      }}
       className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
     />
   );
@@ -42,6 +61,9 @@ export function ProjectCard({
   index: number;
   compact?: boolean;
 }) {
+  const originalSrc = item.image ?? item.gallery?.[0]?.src;
+  const thumbnailSrc = item.thumbnail ?? (item.slug ? `/thumbnails/${item.slug}.webp` : undefined);
+
   return (
     <article
       className={`group relative flex flex-col overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 ${
@@ -61,7 +83,12 @@ export function ProjectCard({
 
       {/* Gambar (bersih, tanpa teks di atasnya) */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
-        <Cover src={item.image ?? item.gallery?.[0]?.src} name={item.name} color={item.color} />
+        <Cover
+          src={originalSrc}
+          thumbnail={thumbnailSrc}
+          name={item.name}
+          color={item.color}
+        />
       </div>
 
       {/* Bodi kartu: kategori, judul, penjelasan */}
