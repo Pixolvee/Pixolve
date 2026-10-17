@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent as RMouseEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, X,
@@ -11,6 +11,85 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 const GAP = 20;
+
+/** Jumlah minimal slide di galeri. Kekurangannya diisi desain contoh supaya slider tidak terlihat kosong. */
+const MIN_SLIDES = 5;
+/** Set `false` kalau semua proyek sudah punya gambar asli (lewat `gallery` di caseStudies.ts). */
+const FILL_WITH_SAMPLES = true;
+
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/**
+ * Desain contoh (SVG) dalam warna brand — dipakai sebagai pengisi sampai gambar asli tersedia.
+ * variant: 0 landing page · 1 dashboard · 2 aplikasi mobile · 3 katalog · 4 formulir/detail
+ */
+function sampleDesign(name: string, variant: number): { src: string; alt: string } {
+  const NAVY = "#002365", TEAL = "#0e9f85", YEL = "#ffe400", SOFT = "#eef3f9";
+  const o: string[] = [];
+  const R = (x: number, y: number, w: number, h: number, f: string, rx = 10, op = 1) =>
+    o.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${f}" opacity="${op}"/>`);
+  const C = (cx: number, cy: number, r: number, f: string, op = 1) =>
+    o.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}" opacity="${op}"/>`);
+  const T = (x: number, y: number, s: string, size = 14, f = NAVY, w = 700, a = "start") =>
+    o.push(`<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" fill="${f}" text-anchor="${a}" font-family="Arial,sans-serif">${esc(s)}</text>`);
+
+  R(0, 0, 800, 600, SOFT, 0);
+  const phones = variant === 2;
+  if (!phones) {
+    // bingkai browser
+    R(40, 36, 720, 528, "#fff", 20);
+    R(40, 36, 720, 44, NAVY, 20);
+    R(40, 60, 720, 20, NAVY, 0);
+    C(66, 58, 6, "#fff", 1); C(86, 58, 6, "#fff", 0.6); C(106, 58, 6, "#fff", 0.3);
+    R(250, 48, 300, 20, "#fff", 10, 0.18);
+    T(400, 62, name, 11, "#fff", 600, "middle");
+  }
+
+  if (variant === 0) {
+    // landing page
+    T(72, 116, "BRAND", 16); [0, 1, 2, 3].forEach((i) => T(470 + i * 70, 116, ["Beranda", "Menu", "Tentang", "Kontak"][i], 11, NAVY, 600));
+    R(72, 160, 330, 38, NAVY, 8); R(72, 208, 250, 38, NAVY, 8);
+    R(72, 266, 280, 12, "#94a3b8", 6, 0.6); R(72, 288, 230, 12, "#94a3b8", 6, 0.6);
+    R(72, 330, 150, 46, YEL, 23); T(147, 359, "Mulai", 14, "#00153d", 700, "middle");
+    C(590, 260, 118, TEAL, 0.14); C(640, 210, 54, NAVY, 0.85); C(556, 316, 36, YEL, 0.95);
+    [0, 1, 2].forEach((i) => { R(72 + i * 224, 420, 204, 112, SOFT, 16); R(90 + i * 224, 440, 90, 12, NAVY, 6, 0.7); R(90 + i * 224, 464, 150, 10, "#94a3b8", 5, 0.6); R(90 + i * 224, 484, 120, 10, "#94a3b8", 5, 0.6); });
+  } else if (variant === 1) {
+    // dashboard
+    R(40, 80, 150, 484, SOFT, 0); ["Dashboard", "Transaksi", "Produk", "Laporan", "Pengaturan"].forEach((s2, i) => { if (i === 0) R(54, 104, 122, 32, NAVY, 10); T(70, 125 + i * 44, s2, 13, i === 0 ? "#fff" : NAVY, 600); });
+    T(218, 118, "Ringkasan", 22);
+    [["PENDAPATAN", "Rp 12,4 jt"], ["TRANSAKSI", "1.284"], ["LABA", "+24%"]].forEach(([a, b], i) => { R(218 + i * 180, 142, 164, 84, SOFT, 14); T(234 + i * 180, 170, a, 10, "#64748b", 700); T(234 + i * 180, 208, b, 24); });
+    R(218, 246, 524, 296, "#f8fafc", 16);
+    [60, 100, 80, 140, 120, 180, 150, 210, 170, 230].forEach((h, i) => R(244 + i * 49, 520 - h, 30, h, i % 3 === 0 ? TEAL : NAVY, 6, 0.35 + i * 0.06));
+  } else if (variant === 2) {
+    // aplikasi mobile (dua layar)
+    [[190, 0], [450, 1]].forEach(([x, k]) => {
+      R(x, 60, 170, 480, NAVY, 30); R(x + 8, 70, 154, 460, "#fff", 24); R(x + 58, 78, 54, 8, NAVY, 4, 0.25);
+      R(x + 22, 108, 126, 14, NAVY, 7, 0.85); R(x + 22, 132, 90, 10, "#94a3b8", 5, 0.6);
+      if (k === 0) { R(x + 22, 164, 126, 120, TEAL, 16, 0.18); C(x + 85, 224, 36, TEAL, 0.5); [0, 1, 2].forEach((i) => R(x + 22, 304 + i * 56, 126, 44, SOFT, 12)); }
+      else { [0, 1, 2, 3].forEach((i) => { C(x + 40, 188 + i * 64, 18, i % 2 ? TEAL : NAVY, 0.75); R(x + 70, 176 + i * 64, 78, 10, NAVY, 5, 0.7); R(x + 70, 194 + i * 64, 56, 8, "#94a3b8", 4, 0.6); }); R(x + 22, 454, 126, 40, YEL, 20); }
+      R(x + 22, 500, 126, 10, "#e2e8f0", 5);
+    });
+  } else if (variant === 3) {
+    // katalog produk
+    T(72, 118, "Katalog", 22); R(560, 98, 168, 30, SOFT, 15);
+    [0, 1, 2, 3, 4, 5].forEach((i) => {
+      const x = 72 + (i % 3) * 224, y = 150 + Math.floor(i / 3) * 198;
+      R(x, y, 204, 180, "#fff", 16); R(x, y, 204, 180, SOFT, 16, 0.6); R(x + 10, y + 10, 184, 90, i % 2 ? TEAL : NAVY, 12, 0.18 + (i % 3) * 0.1);
+      C(x + 102, y + 55, 22, i % 2 ? TEAL : NAVY, 0.6); R(x + 12, y + 114, 110, 12, NAVY, 6, 0.8); R(x + 12, y + 136, 80, 10, "#94a3b8", 5, 0.6); R(x + 130, y + 138, 60, 24, YEL, 12);
+    });
+  } else {
+    // formulir / detail
+    R(72, 112, 300, 420, TEAL, 20, 0.14); C(222, 280, 90, NAVY, 0.8); C(300, 200, 36, YEL, 0.95); C(150, 380, 26, TEAL, 0.7);
+    T(410, 140, "Hubungi kami", 24);
+    [0, 1, 2].forEach((i) => { R(410, 168 + i * 72, 318, 52, "#fff", 12); R(410, 168 + i * 72, 318, 52, SOFT, 12, 0.7); R(426, 188 + i * 72, 90 + i * 24, 10, "#94a3b8", 5, 0.7); });
+    R(410, 392, 318, 90, SOFT, 12); R(410, 502, 150, 44, NAVY, 22); T(485, 530, "Kirim", 14, "#fff", 700, "middle");
+  }
+
+  if (!phones) T(748, 552, "DESAIN CONTOH", 9, NAVY, 700, "end");
+  else T(400, 570, "DESAIN CONTOH", 9, NAVY, 700, "middle");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">${o.join("")}</svg>`;
+  return { src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`, alt: `Desain contoh ${variant + 1} · ${name}` };
+}
 
 function WindowMock({ name }: { name: string }) {
   return (
@@ -37,102 +116,6 @@ function WindowMock({ name }: { name: string }) {
   );
 }
 
-function BeforeAfter({
-  beforeSrc,
-  afterSrc,
-  beforeLabel = "Sebelum",
-  afterLabel = "Sesudah",
-}: {
-  beforeSrc?: string;
-  afterSrc?: string;
-  beforeLabel?: string;
-  afterLabel?: string;
-}) {
-  const [pos, setPos] = useState(50);
-
-  // Fallback: kalau salah satu gambar tidak ada, tampilkan 2 kartu paralel
-  if (!beforeSrc || !afterSrc) {
-    return (
-      <div className="grid gap-5 sm:grid-cols-2">
-        {[
-          { label: beforeLabel, src: beforeSrc, accent: false },
-          { label: afterLabel, src: afterSrc, accent: true },
-        ].map((item) => (
-          <div key={item.label} className="overflow-hidden rounded-3xl border border-slate-200 bg-white">
-            <div className="relative aspect-video bg-slate-100">
-              {item.src ? (
-                <img src={item.src} alt={item.label} className="h-full w-full object-cover" />
-              ) : (
-                <div className={`grid h-full place-items-center text-sm font-bold uppercase tracking-widest ${item.accent ? "bg-gradient-to-br from-[#002365] to-[#0e9f85] text-white" : "bg-slate-100 text-slate-400"}`}>
-                  {item.label}
-                </div>
-              )}
-            </div>
-            <p className="border-t border-slate-100 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-400">
-              {item.label}
-            </p>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // Slider version
-  return (
-    <div className="relative aspect-video w-full select-none overflow-hidden rounded-3xl bg-slate-100 ring-1 ring-slate-200">
-      {/* AFTER */}
-      <img
-        src={afterSrc}
-        alt={afterLabel}
-        className="absolute inset-0 h-full w-full object-cover"
-        draggable={false}
-      />
-
-      {/* BEFORE — terpotong dari kiri */}
-      <div
-        className="absolute inset-y-0 left-0 overflow-hidden"
-        style={{ width: `${pos}%` }}
-      >
-        <img
-          src={beforeSrc}
-          alt={beforeLabel}
-          className="absolute inset-0 h-full object-cover"
-          style={{ width: `${(100 / pos) * 100}%`, maxWidth: "none" }}
-          draggable={false}
-        />
-      </div>
-
-      {/* Labels */}
-      <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-black/55 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur">
-        {beforeLabel}
-      </span>
-      <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-[#ffe400] px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#00153d]">
-        {afterLabel}
-      </span>
-
-      {/* Handle */}
-      <input
-        type="range"
-        min={0}
-        max={100}
-        value={pos}
-        onChange={(e) => setPos(Number(e.target.value))}
-        className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
-        aria-label="Geser untuk membandingkan"
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 w-1 bg-white shadow-[0_0_24px_rgba(0,0,0,.35)]"
-        style={{ left: `${pos}%` }}
-      >
-        <span className="absolute top-1/2 grid size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-[#002365] shadow-xl">
-          <ChevronLeft className="size-4" />
-          <ChevronRight className="size-4" />
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export default function CaseStudyPage() {
   const { slug = "" } = useParams<{ slug: string }>();
   const study = getCaseStudy(slug);
@@ -144,7 +127,22 @@ export default function CaseStudyPage() {
   const [, setActiveSection] = useState("tentang");
   const scroller = useRef<HTMLDivElement>(null);
 
-  const gallery = (study?.gallery ?? []).filter((g) => !failed[g.src]);
+  // Gambar asli: pakai `gallery` jika ada, kalau tidak pakai gambar cover + tampilan terbaru (afterImage)
+  const baseSlides = study?.gallery?.length
+    ? study.gallery
+    : ([
+        study?.image && { src: study.image, alt: `Tampilan ${study.name}` },
+        study?.afterImage && { src: study.afterImage, alt: `Antarmuka ${study.name}` },
+      ].filter(Boolean) as { src: string; alt: string }[]);
+  const realSlides = baseSlides
+    .filter((g, i, a) => a.findIndex((x) => x.src === g.src) === i) // buang duplikat
+    .filter((g) => !failed[g.src]);
+  // Kekurangan slide diisi desain contoh (urutan variasi menyesuaikan kategori proyek)
+  const order = study?.category === "Mobile App" ? [2, 0, 1, 3, 4] : study?.category === "Data Science & AI" ? [1, 0, 3, 2, 4] : [0, 1, 3, 4, 2];
+  const samples = FILL_WITH_SAMPLES && study
+    ? order.slice(0, Math.max(0, MIN_SLIDES - realSlides.length)).map((v) => sampleDesign(study.name, v))
+    : [];
+  const gallery = [...realSlides, ...samples];
   const n = gallery.length;
   const markFailed = (src: string) => setFailed((f) => ({ ...f, [src]: true }));
 
@@ -154,6 +152,38 @@ export default function CaseStudyPage() {
     if (s > GAP) setActive(Math.min(n - 1, Math.round((scroller.current?.scrollLeft ?? 0) / s)));
   };
   const goTo = (i: number) => scroller.current?.scrollTo({ left: Math.max(0, Math.min(n - 1, i)) * step(), behavior: "smooth" });
+
+  // Tarik dengan mouse (desktop). Di layar sentuh, geser memakai scroll bawaan browser.
+  const dragRef = useRef({ down: false, x: 0, left: 0, moved: false });
+  const onMouseDown = (e: RMouseEvent<HTMLDivElement>) => {
+    const el = scroller.current;
+    if (!el || e.button !== 0) return;
+    dragRef.current = { down: true, x: e.clientX, left: el.scrollLeft, moved: false };
+    el.style.scrollSnapType = "none";
+    el.style.scrollBehavior = "auto";
+  };
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      const d = dragRef.current, el = scroller.current;
+      if (!d.down || !el) return;
+      const dx = e.clientX - d.x;
+      if (Math.abs(dx) > 5) d.moved = true;
+      el.scrollLeft = d.left - dx;
+    };
+    const up = () => {
+      const d = dragRef.current, el = scroller.current;
+      if (!d.down || !el) return;
+      d.down = false;
+      el.style.scrollSnapType = "";
+      el.style.scrollBehavior = "";
+      const s = step();
+      if (s > GAP) goTo(Math.round(el.scrollLeft / s)); // rapikan ke slide terdekat
+      setTimeout(() => { d.moved = false; }, 0); // klik setelah menarik tidak membuka lightbox
+    };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseup", up); };
+  }, [n]);
 
   // SEO
   useEffect(() => {
@@ -210,8 +240,8 @@ export default function CaseStudyPage() {
   const idx = caseStudies.findIndex((c) => c.slug === study.slug);
   const next = caseStudies.length > 1 ? caseStudies[(idx + 1) % caseStudies.length] : null;
   const cover = study.image && !failed[study.image] ? { src: study.image, alt: study.name } : undefined;
-  const heroImg = gallery[0] ?? cover;
-  const aboutImg = gallery[1] ?? gallery[0] ?? cover;
+  const heroImg = realSlides[0] ?? cover;
+  const aboutImg = realSlides[1] ?? realSlides[0] ?? cover;
   const about = study.about ?? [study.text];
   const features = study.features ?? [];
   const techStack = study.techStack ?? [];
@@ -279,7 +309,7 @@ export default function CaseStudyPage() {
       {/* STICKY SIDE NAV */}
       <div className="sticky top-20 z-40 hidden border-b border-slate-100 bg-white/95 backdrop-blur lg:block">
         <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-8 py-3 text-sm">
-          
+
           <div className="ml-auto flex items-center gap-2">
             <button
               onClick={() => { navigator.share?.({ title: study.name, url: window.location.href }); }}
@@ -309,45 +339,45 @@ export default function CaseStudyPage() {
         </div>
       </section>
 
-      {/* PROBLEM / SOLUTION / RESULT */}
-      <section id="pendekatan" className="scroll-mt-32 bg-[#f8fafc] px-5 py-28 lg:px-8" data-testid="case-approach">
-        <div className="mx-auto max-w-6xl">
-          {(study.beforeImage || study.afterImage) && (
-          <div className="mt-16">
-            <p className="mb-5 text-center text-xs font-bold uppercase tracking-widest text-slate-400">
-              Sebelum vs Sesudah — geser untuk membandingkan
-            </p>
-            <BeforeAfter
-              beforeSrc={study.beforeImage}
-              afterSrc={study.afterImage}
-              beforeLabel="Versi lama"
-              afterLabel="Versi baru"
-            />
-          </div>
-        )}
-        </div>
-      </section>
-
-      {/* GALERI */}
+      {/* GAMBAR PROYEK — bisa digeser (sentuh) atau ditarik (mouse) */}
       {n > 0 && (
         <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-28" data-testid="case-gallery">
           <div className="mx-auto max-w-6xl px-5 lg:px-8">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="cs-eyebrow text-[#0e9f85]">Galeri</p>
+                <p className="cs-eyebrow text-[#0e9f85]">Gambar proyek</p>
                 <h2 className="mt-4 text-3xl font-bold text-[#002365] sm:text-4xl">Lihat langsung tampilannya</h2>
+                {n > 1 && (
+                  <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500">
+                    <ArrowLeft className="size-3.5" /> Geser atau tarik gambar untuk melihat lainnya <ArrowRight className="size-3.5" />
+                  </p>
+                )}
               </div>
-              <div className="hidden gap-2 sm:flex">
-                <button onClick={() => goTo(active - 1)} aria-label="Sebelumnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-white text-[#002365] transition-transform hover:-translate-y-0.5"><ChevronLeft className="size-5" /></button>
-                <button onClick={() => goTo(active + 1)} aria-label="Berikutnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-[#002365] text-white transition-transform hover:-translate-y-0.5"><ChevronRight className="size-5" /></button>
-              </div>
+              {n > 1 && (
+                <div className="hidden gap-2 sm:flex">
+                  <button onClick={() => goTo(active - 1)} aria-label="Sebelumnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-white text-[#002365] transition-transform hover:-translate-y-0.5"><ChevronLeft className="size-5" /></button>
+                  <button onClick={() => goTo(active + 1)} aria-label="Berikutnya" className="cs-shadow-soft grid size-11 place-items-center rounded-full bg-[#002365] text-white transition-transform hover:-translate-y-0.5"><ChevronRight className="size-5" /></button>
+                </div>
+              )}
             </div>
           </div>
-          <div ref={scroller} onScroll={onScroll} className="cs-no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-4 lg:px-[max(2rem,calc((100vw-72rem)/2+2rem))]">
+
+          <div
+            ref={scroller}
+            onScroll={onScroll}
+            onMouseDown={onMouseDown}
+            onDragStart={(e) => e.preventDefault()}
+            className="cs-no-scrollbar mt-12 flex cursor-grab select-none snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-4 active:cursor-grabbing lg:px-[max(2rem,calc((100vw-72rem)/2+2rem))]"
+          >
             {gallery.map((g, i) => (
-              <button key={g.src} onClick={() => setOpen(i)} className="cs-shadow-card group w-[85%] shrink-0 snap-start overflow-hidden rounded-3xl bg-white p-3 text-left transition-all hover:-translate-y-1 hover:shadow-2xl sm:w-[46%] lg:w-[31%]" data-testid={`case-image-${i + 1}`}>
+              <button
+                key={g.src}
+                onClick={() => { if (!dragRef.current.moved) setOpen(i); }}
+                className="cs-shadow-card group w-[85%] shrink-0 snap-start overflow-hidden rounded-3xl bg-white p-3 text-left transition-all hover:-translate-y-1 hover:shadow-2xl sm:w-[46%] lg:w-[31%]"
+                data-testid={`case-image-${i + 1}`}
+              >
                 <div className="overflow-hidden rounded-2xl">
-                  <img src={g.src} alt={g.alt} loading="lazy" onError={() => markFailed(g.src)} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={g.src} alt={g.alt} loading="lazy" draggable={false} onError={() => markFailed(g.src)} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <div className="flex items-center justify-between px-2 pb-1 pt-4">
                   <p className="text-sm font-semibold text-[#002365]">{g.alt}</p>
@@ -356,6 +386,7 @@ export default function CaseStudyPage() {
               </button>
             ))}
           </div>
+
           {n > 1 && (
             <div className="mt-8 flex justify-center gap-2" data-testid="case-dots">
               {gallery.map((g, i) => <button key={g.src} onClick={() => goTo(i)} aria-label={`Slide ${i + 1}`} className={`h-2 rounded-full transition-all ${i === active ? "w-7 bg-[#002365]" : "w-2 bg-[#002365]/25"}`} />)}

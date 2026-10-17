@@ -26,8 +26,9 @@ function Cover({ src, name, color }: { src?: string; name: string; color: string
       src={src}
       alt={name}
       loading="lazy"
+      decoding="async"
       onError={() => setFailed(true)}
-      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
     />
   );
 }
