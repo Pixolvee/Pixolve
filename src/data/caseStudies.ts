@@ -11,14 +11,49 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
   { id: "data-science", label: "Data Science & AI" },
 ];
 
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  "web-development": [
+    "web development",
+    "pengembangan web",
+    "web",
+    "website",
+  ],
+  "mobile-app": [
+    "mobile app",
+    "aplikasi seluler",
+    "pengembangan aplikasi seluler",
+    "mobile",
+  ],
+  "ui-ux": [
+    "ui/ux design",
+    "desain ui/ux",
+    "ui/ux",
+    "ui ux",
+    "ui ux design",
+  ],
+  "data-science": [
+    "data science & ai",
+    "sains data & ai",
+    "data science",
+    "ai",
+  ],
+};
+
 export function matchCategory(item: CaseStudy, categoryId: string): boolean {
   if (categoryId === "all") return true;
   const targetCategory = PORTFOLIO_CATEGORIES.find((c) => c.id === categoryId);
   if (!targetCategory) return true;
-  const label = targetCategory.label.toLowerCase();
 
-  const primaryMatch = item.category?.toLowerCase() === label;
-  const multiMatch = item.categories?.some((c) => c.toLowerCase() === label);
+  const validTerms = CATEGORY_ALIASES[categoryId] ?? [targetCategory.label.toLowerCase()];
+
+  const isMatch = (str?: string) => {
+    if (!str) return false;
+    const s = str.trim().toLowerCase();
+    return validTerms.includes(s);
+  };
+
+  const primaryMatch = isMatch(item.category);
+  const multiMatch = item.categories?.some((c) => isMatch(c));
 
   return Boolean(primaryMatch || multiMatch);
 }
@@ -59,11 +94,10 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "kari-kambing-cb-sp-ektreun",
     name: "Kari Kambing CB SP Ektreun",
-    category: "Pengembangan Web",
+    category: "Web Development",
     categories: [
-      "Pengembangan Web",
-      "Desain UI/UX",
-      "Katalog Menu Digital"
+      "Web Development",
+      "UI/UX Design",
     ],
     type: "Website Profil Rumah Makan dan Katalog Menu",
     image: "/Mockup Kari Kambing.png",
@@ -76,11 +110,11 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "smartumkm",
     name: "SmartUMKM - Dashboard Manajemen Usaha",
-    category: "Pengembangan Web",
+    category: "Web Development",
     categories: [
-      "Pengembangan Web",
-      "Dashboard Analitik",
-      "Manajemen Bisnis"
+      "Web Development",
+      "UI/UX Design",
+      "Data Science & AI",
     ],
     type: "Platform Manajemen Usaha Terintegrasi",
     image: "/Mockup Smart UMKM.png",
@@ -93,11 +127,10 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "kopi-gayo",
     name: "Kopi Gayo - Website Kopi Lokal Aceh",
-    category: "Pengembangan Web",
+    category: "Web Development",
     categories: [
-      "Pengembangan Web",
-      "Desain UI/UX",
-      "E-Commerce"
+      "Web Development",
+      "UI/UX Design",
     ],
     type: "Website Profil Bisnis dan Katalog Produk",
     image: "/Mockup Kopi Gayo.png",
@@ -110,11 +143,10 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "sahamiq",
     name: "SAHAMIQ - Dashboard Analisis Saham",
-    category: "Pengembangan Web",
+    category: "Web Development",
     categories: [
-      "Pengembangan Web",
-      "Analisis Data Keuangan",
-      "Visualisasi Data"
+      "Web Development",
+      "Data Science & AI",
     ],
     type: "Platform Analisis dan Monitoring Saham",
     image: "/Mockup Sahamiq (2).png",
@@ -127,11 +159,10 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "chatku",
     name: "Chatku - Aplikasi Pesan Aman",
-    category: "Pengembangan Aplikasi Seluler",
+    category: "Mobile App",
     categories: [
-      "Aplikasi Seluler",
-      "Desain UI/UX",
-      "Keamanan Digital"
+      "Mobile App",
+      "UI/UX Design",
     ],
     type: "Aplikasi Chat dan Komunikasi Aman",
     image: "/Mockup Chatku (1).png",
@@ -144,11 +175,10 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "dashboard-monitoring-desa",
     name: "MONTHLAB",
-    category: "Pengembangan Web",
+    category: "Web Development",
     categories: [
-      "Pengembangan Web",
-      "Pengolahan Data Excel",
-      "Visualisasi Data"
+      "Web Development",
+      "Data Science & AI",
     ],
     type: "Aplikasi Dashboard Interaktif",
     image: "/Mockup Monthlab.png",
@@ -161,20 +191,20 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "baked-goods",
     name: "Ulvoria",
-    category: "Produk Harian",
-    categories: ["Baked Goods", "Kualitas Premium"],
-    type: "Produk Patisserie",
+    category: "Web Development",
+    categories: ["Web Development", "UI/UX Design"],
+    type: "Website Patisserie dan Katalog Digital",
     image: "/Mocukup_Ulvoria_v2 (1).png",
     color: "from-[#75a8ff] to-[#002365]",
     beforeImage: "/services/baked-goods-before.png",
     afterImage: "/services/baked-goods-after.png",
-    text: "Ulvoria menghadirkan pilihan baked goods dengan perhatian pada kualitas bahan, tekstur, dan cita rasa. Setiap sajian dirancang untuk memberikan kenikmatan dalam setiap gigitan, baik untuk menemani waktu santai maupun melengkapi momen bersama orang terdekat.",
+    text: "Website Ulvoria dirancang untuk menghadirkan pengalaman digital yang memikat bagi penikmat baked goods premium. Menampilkan katalog produk patisserie pilihan, informasi bahan berkualitas, serta pemesanan praktis, website ini memudahkan pelanggan menikmati sajian istimewa kapan saja.",
   },
   {
     slug: "resto",
     name: "Restoran Seluler dengan Pengenalan Wajah",
-    category: "Aplikasi Seluler",
-    categories: ["Aplikasi Seluler", "Desain UI/UX", "Sains Data & AI"],
+    category: "Mobile App",
+    categories: ["Mobile App", "UI/UX Design", "Data Science & AI"],
     type: "Aplikasi Seluler & AI",
     image: "/Resto.png",
     color: "from-[#ffe400] to-[#ffb700]",
@@ -185,8 +215,8 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "arunika-finance",
     name: "Penjualan Pulsa",
-    category: "Pengembangan Web",
-    categories: ["Pengembangan Web", "Desain UI/UX"],
+    category: "Web Development",
+    categories: ["Web Development", "UI/UX Design"],
     type: "Aplikasi Web",
     image: "/Pulsa.png",
     color: "from-[#75a8ff] to-[#002365]",
@@ -197,8 +227,8 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "time-management",
     name: "Sistem Informasi Manajemen Waktu Belajar (SIM)",
-    category: "Pengembangan Web",
-    categories: ["Pengembangan Web"],
+    category: "Web Development",
+    categories: ["Web Development"],
     type: "Aplikasi Web",
     image: "/SIM.png",
     color: "from-[#0e9f85] to-[#002365]",
@@ -209,8 +239,8 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "ticket-booking",
     name: "Sistem Pemesanan Tiket Film Berbasis Seluler",
-    category: "Aplikasi Seluler",
-    categories: ["Aplikasi Seluler", "Desain UI/UX"],
+    category: "Mobile App",
+    categories: ["Mobile App", "UI/UX Design"],
     type: "Aplikasi Seluler",
     image: "/bioskop.png",
     color: "from-[#5eead4] to-[#002365]",
@@ -244,8 +274,8 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "Donasi",
     name: "Situs Web Donasi",
-    category: "Pengembangan Web",
-    categories: ["Pengembangan Web", "Desain UI/UX"],
+    category: "Web Development",
+    categories: ["Web Development", "UI/UX Design"],
     type: "Platform Web",
     image: "/Donasi.png",
     color: "from-[#ffe400] to-[#ffb700]",

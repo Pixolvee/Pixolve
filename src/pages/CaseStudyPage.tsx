@@ -237,6 +237,11 @@ export default function CaseStudyPage() {
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-32 pt-44 lg:px-8">
           <div className="cs-rise mt-6">
             <div className="flex flex-wrap items-center gap-3">
+              {study.category && (
+                <span className="inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-teal-400/10 px-4 py-1.5 text-xs font-semibold text-teal-300">
+                  {study.category}
+                </span>
+              )}
               {study.status && (
                 <span className="cs-accent-grad inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-white" data-testid="case-status">
                   <span className="size-1.5 animate-pulse rounded-full bg-white" /> {study.status}

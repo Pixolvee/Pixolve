@@ -112,11 +112,11 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          {/* Grid Proyek */}
+          {/* Grid Proyek (1 baris 4 card di desktop) */}
           {filteredStudies.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2" data-testid="projects-grid">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="projects-grid">
               {filteredStudies.map((item, index) => (
-                <ProjectCard key={item.slug} item={item} index={index} />
+                <ProjectCard key={item.slug} item={item} index={index} compact />
               ))}
             </div>
           ) : (
