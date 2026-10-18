@@ -50,11 +50,11 @@ export default function ProjectsPage() {
       {/* Header */}
       <section className="cs-ink relative overflow-hidden">
         <div className="absolute inset-0 text-white opacity-[0.07]" style={{ backgroundImage: "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
-        <div className="cs-rise relative mx-auto max-w-6xl px-5 pb-24 pt-40 lg:px-8">
+        <div className="cs-rise relative mx-auto max-w-6xl px-5 pt-28 pb-10 sm:pt-32 sm:pb-12 lg:px-8">
           <p className="cs-eyebrow text-[#5eead4]">Portofolio</p>
-          <h1 className="mt-5 max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl" data-testid="projects-title">Semua proyek</h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/75">
-            {caseStudies.length} studi kasus dari produk, engineering, dan data yang kami kerjakan bersama partner.
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-testid="projects-title">Semua Proyek</h1>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75 sm:text-base">
+            Kumpulan {caseStudies.length} studi kasus produk, engineering, dan data yang kami kerjakan bersama partner.
           </p>
         </div>
       </section>
