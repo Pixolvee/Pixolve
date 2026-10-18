@@ -10,7 +10,7 @@ import { QuoteForm } from "@/components/sections/QuoteForm";
 import { Team } from "@/components/sections/Team";
 // import { Faq } from "@/components/sections/Faq";
 // import { Blog } from "@/components/sections/Blog";
-import { Newsletter } from "@/components/sections/Newsletter";
+// import { Newsletter } from "@/components/sections/Newsletter";
 
 export default function Home() {
   return (
@@ -25,7 +25,6 @@ export default function Home() {
         <Team />
         {/* <Faq /> */}
         <QuoteForm />
-        <Newsletter />
       </main>
       <Footer />
       <WhatsappWidget />
