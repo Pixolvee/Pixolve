@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import {
   caseStudies,
@@ -138,16 +138,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
-        <div className="rounded-[2.25rem] border border-slate-200 bg-[#eef3f9] p-12 text-center sm:p-16">
-          <h2 className="text-3xl font-bold text-[#002365] sm:text-4xl">Punya proyek serupa?</h2>
-          <p className="mx-auto mt-4 max-w-lg text-slate-600">Ceritakan kebutuhan Anda, kami bantu petakan langkah pertamanya.</p>
-          <Link to="/#quote-form" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#002365] px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5">
-            Diskusi dengan kami <ArrowUpRight className="size-4" />
-          </Link>
-        </div>
-      </section>
       <Footer />
     </main>
   );

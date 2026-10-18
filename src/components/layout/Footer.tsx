@@ -13,8 +13,8 @@ const serviceLinks: Array<[string, string]> = [
 const companyLinks: Array<[string, string]> = [
   ["Beranda", "/#hero"],
   ["Layanan", "/#layanan"],
-  ["Semua Projek", "/portofolio"],
-  ["Tim Pixolve", "/#tim"],
+  ["Studi Kasus", "/#portofolio"],
+  ["Tim Kami", "/#tim"],
 ];
 
 export function Footer() {

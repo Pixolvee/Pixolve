@@ -6,7 +6,7 @@ import { BrandMark } from "@/components/ui/BrandMark";
 const navLinks: Array<[string, string]> = [
   ["Beranda", "/#hero"],
   ["Layanan", "/#layanan"],
-  ["Projek", "/portofolio"],
+  ["Studi Kasus", "/#portofolio"],
   ["Tim", "/#tim"],
 ];
 
