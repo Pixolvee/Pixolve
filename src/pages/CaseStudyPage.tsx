@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, X,
+  ArrowLeft, Check, ChevronLeft, ChevronRight, X,
   Calendar, Layers, Share2,
   ArrowRight, Building2,
 } from "lucide-react";
@@ -232,7 +232,7 @@ export default function CaseStudyPage() {
   const features = study.features ?? [];
   const techStack = study.techStack ?? [];
   const tags = study.tags ?? [];
-  const related = caseStudies.filter((c) => c.slug !== study.slug).slice(0, 3);
+  const related = caseStudies.filter((c) => c.slug !== study.slug).slice(0, 2);
   return (
     <main className="min-h-screen bg-white" data-testid="case-study-page">
       {/* Reading progress */}
@@ -242,64 +242,64 @@ export default function CaseStudyPage() {
 
       <Header />
 
-      {/* HERO (Header Proyek Bersih) */}
-      <section className="border-b border-slate-100 bg-[#f8fafc] pt-28 pb-8 sm:pt-32 sm:pb-10" data-testid="case-hero">
-        <div className="mx-auto max-w-6xl px-5 lg:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Link
-                to="/portofolio"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#002365] transition-colors"
-              >
-                <ArrowLeft className="size-3.5" /> Portofolio
-              </Link>
-              <span className="text-slate-300">/</span>
-              {study.category && (
-                <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-3 py-1 text-xs font-bold text-[#002365]">
-                  {study.category}
-                </span>
-              )}
-              {study.type && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
-                  <Layers className="size-3 text-slate-400" /> {study.type}
-                </span>
-              )}
-              {study.year && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
-                  <Calendar className="size-3 text-slate-400" /> {study.year}
-                </span>
-              )}
-            </div>
-
-            <button
-              onClick={() => { navigator.share?.({ title: study.name, url: window.location.href }); }}
-              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:border-[#002365] hover:text-[#002365] transition-colors shadow-2xs"
-              aria-label="Bagikan"
+      {/* HEADER & TENTANG PROYEK */}
+      <section id="tentang" className="mx-auto max-w-6xl px-5 pt-28 pb-14 sm:pt-32 sm:pb-16 lg:px-8" data-testid="case-about">
+        {/* Breadcrumb + Metadata + Share */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Link
+              to="/portofolio"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#002365]"
             >
-              <Share2 className="size-3.5" /> Bagikan
-            </button>
+              <ArrowLeft className="size-3.5" /> Portofolio
+            </Link>
+            <span className="text-slate-300">/</span>
+            {study.category && (
+              <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-3 py-1 text-xs font-bold text-[#002365]">
+                {study.category}
+              </span>
+            )}
+            {study.type && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
+                <Layers className="size-3 text-slate-400" /> {study.type}
+              </span>
+            )}
+            {study.year && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
+                <Calendar className="size-3 text-slate-400" /> {study.year}
+              </span>
+            )}
           </div>
 
-          <h1 className="mt-4 font-heading text-2xl font-extrabold tracking-tight text-[#002365] sm:text-4xl lg:text-5xl" data-testid="case-title">
-            {study.name}
-          </h1>
+          <button
+            onClick={() => { navigator.share?.({ title: study.name, url: window.location.href }); }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-[#002365] hover:text-[#002365] shadow-2xs"
+            aria-label="Bagikan"
+          >
+            <Share2 className="size-3.5" /> Bagikan
+          </button>
         </div>
-      </section>
 
-      {/* TENTANG */}
-      <section id="tentang" className="mx-auto grid max-w-6xl scroll-mt-32 items-center gap-16 px-5 py-16 lg:grid-cols-2 lg:px-8" data-testid="case-about">
-        <div className="relative">
-          {aboutImg ? (
-            <img src={aboutImg.src} alt={aboutImg.alt} loading="lazy" onError={() => markFailed(aboutImg.src)} className="cs-shadow-float aspect-[4/3] w-full rounded-3xl object-cover" />
-          ) : (
-            <WindowMock name={study.name} />
-          )}
-        </div>
-        <div>
-          <p className="cs-eyebrow text-[#0e9f85]">Tentang proyek</p>
-          <h2 className="mt-4 text-3xl font-bold text-[#002365] sm:text-4xl">Kenali {study.name}</h2>
-          <div className="mt-6 space-y-5 text-[17px] leading-8 text-slate-600">{about.map((p) => <p key={p}>{p}</p>)}</div>
-          {tags.length > 0 && <div className="mt-7 flex flex-wrap gap-2">{tags.map((t) => <span key={t} className="rounded-full bg-[#eef3f9] px-3.5 py-1.5 text-xs font-semibold text-[#002365]">{t}</span>)}</div>}
+        {/* Judul Proyek Utama */}
+        <h1 className="mt-8 font-heading text-3xl font-extrabold tracking-tight text-[#002365] sm:text-4xl lg:text-5xl" data-testid="case-title">
+          {study.name}
+        </h1>
+
+        {/* 2 Kolom Showcase: Gambar & Deskripsi */}
+        <div className="mt-10 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="relative">
+            {aboutImg ? (
+              <img src={aboutImg.src} alt={aboutImg.alt} loading="lazy" onError={() => markFailed(aboutImg.src)} className="cs-shadow-float aspect-[4/3] w-full rounded-3xl object-cover" />
+            ) : (
+              <WindowMock name={study.name} />
+            )}
+          </div>
+          <div>
+            <p className="cs-eyebrow text-[#0e9f85]">Tentang proyek</p>
+            <h2 className="mt-3 text-2xl font-bold text-[#002365] sm:text-3xl">Kenali {study.name}</h2>
+            <div className="mt-5 space-y-4 text-base leading-7 text-slate-600 sm:text-[17px] sm:leading-8">{about.map((p) => <p key={p}>{p}</p>)}</div>
+            {tags.length > 0 && <div className="mt-6 flex flex-wrap gap-2">{tags.map((t) => <span key={t} className="rounded-full bg-[#eef3f9] px-3.5 py-1.5 text-xs font-semibold text-[#002365]">{t}</span>)}</div>}
+          </div>
         </div>
       </section>
 
@@ -433,49 +433,61 @@ export default function CaseStudyPage() {
         </section>
       )}
 
-      {/* RELATED CASE STUDIES */}
-      <section className="bg-[#eef3f9] px-5 py-16 lg:px-8" data-testid="case-related">
+      {/* RELATED CASE STUDIES (Eksplorasi Lain) */}
+      <section className="border-t border-slate-100 bg-[#f8fafc] px-5 py-14 lg:px-8" data-testid="case-related">
         <div className="mx-auto max-w-6xl">
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="cs-eyebrow text-[#0e9f85]">Studi kasus lain</p>
-              <h2 className="mt-4 text-3xl font-bold text-[#002365] sm:text-4xl">Lihat proyek lainnya</h2>
+              <p className="text-xs font-bold uppercase tracking-widest text-amber-500">
+                Eksplorasi Lain
+              </p>
+              <h2 className="mt-1 font-heading text-2xl font-bold text-[#002365] sm:text-3xl">
+                Karya Terkait Lainnya
+              </h2>
             </div>
-            <Link to="/portofolio" className="inline-flex items-center gap-2 text-sm font-bold text-[#002365] hover:text-[#0e9f85]">
-              Semua portofolio <ArrowRight className="size-4" />
+            <Link
+              to="/portofolio"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 transition-colors hover:text-[#002365]"
+            >
+              Lihat semua karya <ArrowRight className="size-4" />
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
             {related.map((r) => (
               <Link
                 key={r.slug}
                 to={`/portofolio/${r.slug}`}
-                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all hover:-translate-y-1 hover:shadow-xl"
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:p-5"
               >
-                <div className="relative aspect-video overflow-hidden bg-slate-100">
-                  {r.image ? (
-                    <img
-                      src={r.image}
-                      alt={r.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className={`flex h-full items-center justify-center bg-gradient-to-br ${r.color}`}>
-                      <Building2 className="size-10 text-[#002365]" />
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400">{r.type ?? "Proyek"}</p>
-                  <h3 className="mt-2 text-xl font-bold text-[#002365] transition-colors group-hover:text-[#0e9f85]">{r.name}</h3>
-                  <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{r.text}</p>
-                  <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-                    <span className="text-xs font-semibold text-[#0e9f85]">{r.result}</span>
-                    <ArrowUpRight className="size-4 text-[#002365] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                <div className="flex min-w-0 items-center gap-4">
+                  <div className="size-20 shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:size-22">
+                    {r.image ? (
+                      <img
+                        src={r.image}
+                        alt={r.name}
+                        loading="lazy"
+                        className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className={`flex size-full items-center justify-center bg-gradient-to-br ${r.color}`}>
+                        <Building2 className="size-8 text-[#002365]" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-amber-500">
+                      {r.type ?? r.category ?? "WEB APP"}
+                    </span>
+                    <h3 className="mt-1 truncate text-base font-bold text-[#002365] transition-colors group-hover:text-amber-600 sm:text-lg">
+                      {r.name}
+                    </h3>
+                    <p className="mt-1 line-clamp-1 text-xs text-slate-500">
+                      {r.text}
+                    </p>
                   </div>
                 </div>
+                <ArrowRight className="size-4.5 shrink-0 text-slate-400 transition-all group-hover:translate-x-1 group-hover:text-[#002365]" />
               </Link>
             ))}
           </div>
