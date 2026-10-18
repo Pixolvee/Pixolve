@@ -1,21 +1,20 @@
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import {ExternalLink, Mail, Phone } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ExternalLink, Mail, Phone } from "lucide-react";
 import { BrandMark } from "@/components/ui/BrandMark";
 
 const serviceLinks: Array<[string, string]> = [
-  ["Web Development", "/layanan/web-development"],
-  ["Mobile App", "/layanan/mobile-app"],
-  ["QA & Testing", "/layanan/qa-testing"],
-  ["Data Science", "/layanan/data-science"],
-  ["UI/UX Design", "/layanan/ui-ux-design"],
+  ["Web Development", "/#layanan"],
+  ["Mobile App Development", "/#layanan"],
+  ["QA & Testing", "/#layanan"],
+  ["Data Science", "/#layanan"],
+  ["UI/UX Design", "/#layanan"],
 ];
 
 const companyLinks: Array<[string, string]> = [
-  ["Tentang Pixolve", "/#tentang"],
-  ["Studi Kasus", "/#portofolio"],
-  ["Tim & Karier", "/#tim"],
-  ["Blog & Insight", "/#blog"],
-  ["FAQ", "/#faq"],
+  ["Beranda", "/#hero"],
+  ["Layanan", "/#layanan"],
+  ["Semua Projek", "/portofolio"],
+  ["Tim Pixolve", "/#tim"],
 ];
 
 export function Footer() {
@@ -41,6 +40,9 @@ export function Footer() {
       } else {
         navigate(`/${hash}`);
       }
+    } else {
+      e.preventDefault();
+      navigate(href);
     }
   };
 
@@ -56,13 +58,12 @@ export function Footer() {
                 href="/#quote-form"
                 onClick={(e) => handleSectionClick(e, "/#quote-form")}
                 className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]"
-                aria-label="LinkedIn Pixolve"
+                aria-label="Konsultasi Pixolve"
               >
                 <ExternalLink className="size-4" />
               </a>
               <a
-                href="/#quote-form"
-                onClick={(e) => handleSectionClick(e, "/#quote-form")}
+                href="mailto:Pixolvee@gmail.com"
                 className="flex size-9 items-center justify-center rounded-full border border-white/15 text-blue-200 hover:border-[#ffe400] hover:text-[#ffe400]"
                 aria-label="Email Pixolve"
               >
@@ -74,21 +75,26 @@ export function Footer() {
             <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Layanan</p>
             <div className="mt-5 space-y-3 text-sm text-blue-200">
               {serviceLinks.map(([label, href]) => (
-                <Link key={href} to={href} className="block hover:text-white">
+                <a
+                  key={label}
+                  href={href}
+                  onClick={(e) => handleSectionClick(e, href)}
+                  className="block hover:text-white transition-colors"
+                >
                   {label}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Perusahaan</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#ffe400]">Menu</p>
             <div className="mt-5 space-y-3 text-sm text-blue-200">
               {companyLinks.map(([label, href]) => (
                 <a
-                  key={href}
+                  key={label}
                   href={href}
                   onClick={(e) => handleSectionClick(e, href)}
-                  className="block hover:text-white"
+                  className="block hover:text-white transition-colors"
                 >
                   {label}
                 </a>

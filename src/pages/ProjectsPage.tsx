@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import {
   caseStudies,
@@ -45,15 +45,7 @@ export default function ProjectsPage() {
     <main className="min-h-screen bg-white" data-testid="projects-page">
       {/* Navbar pill */}
       {/* TODO: ganti dengan Navbar dari components/layout jika ingin konsisten dengan beranda */}
-      <div className="fixed inset-x-0 top-4 z-40 px-4">
-        <Header />
-        <nav className="cs-shadow-card mx-auto flex max-w-6xl items-center justify-between rounded-full border border-slate-200/70 bg-white/80 px-5 py-3 backdrop-blur-xl">
-          <Link to="/" className="text-lg font-bold tracking-tight text-[#002365]">Pixolve</Link>
-          <Link to="/" className="inline-flex items-center gap-1.5 rounded-full bg-[#002365] px-4 py-2 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5" data-testid="projects-back-link">
-            <ArrowLeft className="size-3.5" /> Beranda
-          </Link>
-        </nav>
-      </div>
+      <Header />
 
       {/* Header */}
       <section className="cs-ink relative overflow-hidden">

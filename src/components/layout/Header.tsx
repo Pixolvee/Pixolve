@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { BrandMark } from "@/components/ui/BrandMark";
-import { services } from "@/data/services";
 
 const navLinks: Array<[string, string]> = [
   ["Beranda", "/#hero"],
   ["Layanan", "/#layanan"],
-  ["Portofolio", "/#portofolio"],
-  ["Harga", "/#harga"],
-  ["FAQ", "/#faq"],
+  ["Projek", "/portofolio"],
+  ["Tim", "/#tim"],
 ];
 
 export function Header() {
@@ -42,6 +40,9 @@ export function Header() {
       } else {
         navigate(`/${hash}`);
       }
+    } else {
+      e.preventDefault();
+      navigate(href);
     }
   };
 
@@ -61,25 +62,6 @@ export function Header() {
               {label}
             </a>
           ))}
-          <details className="relative" data-testid="nav-services-dropdown">
-            <summary className="flex cursor-pointer list-none items-center gap-1 text-sm font-medium text-blue-100 hover:text-[#ffe400]">Layanan <ChevronDown className="size-3" /></summary>
-            <div className="absolute right-0 top-8 w-64 rounded-2xl border border-white/10 bg-[#00153d] p-3 shadow-2xl" data-testid="nav-services-menu">
-              {services.map((service) => (
-                <Link
-                  key={service.title}
-                  to={`/layanan/${service.slug}`}
-                  onClick={() => {
-                    const details = document.querySelector('[data-testid="nav-services-dropdown"]') as HTMLDetailsElement | null;
-                    if (details) details.open = false;
-                  }}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-blue-100 hover:bg-white/10 hover:text-[#ffe400]"
-                  data-testid={`nav-service-${service.number}`}
-                >
-                  {service.number} {service.title}
-                </Link>
-              ))}
-            </div>
-          </details>
         </nav>
         <div className="hidden items-center gap-3 lg:flex" data-testid="header-actions">
           <a
