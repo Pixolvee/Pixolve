@@ -37,7 +37,7 @@ export function Team() {
                     <img
                       src={person.image}
                       alt={person.name}
-                      className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
                     <a
                       href={person.portfolioUrl}
