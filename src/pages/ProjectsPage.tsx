@@ -68,7 +68,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Daftar proyek: Filter Kategori & Grid */}
-      <section className="bg-[#eef3f9] px-5 py-16 lg:px-8">
+      <section className="bg-[#eef3f9] px-5 py-10 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Category Filter Pills */}
           <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-6">
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-6xl px-5 py-24 lg:px-8">
+      <section className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
         <div className="rounded-[2.25rem] border border-slate-200 bg-[#eef3f9] p-12 text-center sm:p-16">
           <h2 className="text-3xl font-bold text-[#002365] sm:text-4xl">Punya proyek serupa?</h2>
           <p className="mx-auto mt-4 max-w-lg text-slate-600">Ceritakan kebutuhan Anda, kami bantu petakan langkah pertamanya.</p>

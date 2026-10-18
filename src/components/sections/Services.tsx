@@ -4,7 +4,7 @@ import { services } from "@/data/services";
 
 export function Services() {
   return (
-    <section id="layanan" className="mx-auto max-w-7xl px-5 py-20 sm:py-28 lg:px-8" data-testid="services-section">
+    <section id="layanan" className="mx-auto max-w-7xl px-5 py-12 sm:py-16 lg:px-8" data-testid="services-section">
       <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
         <a href="/layanan/web-development" className="block transition-opacity hover:opacity-80" aria-label="Lihat detail Web Development">
           <SectionHeading eyebrow="Apa yang kami bangun" title="Dari brief pertama sampai produk yang dipakai." body="Satu tim senior untuk menyatukan strategi, desain, engineering, dan kualitas—tanpa handoff yang memperlambat." />

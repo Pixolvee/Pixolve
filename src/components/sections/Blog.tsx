@@ -5,7 +5,7 @@ import { posts } from "@/data/posts";
 
 export function Blog() {
   return (
-    <section id="blog" className="bg-[#eef3f9] px-5 py-20 sm:py-28 lg:px-8" data-testid="insights-section">
+    <section id="blog" className="bg-[#eef3f9] px-5 py-12 sm:py-16 lg:px-8" data-testid="insights-section">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
           <SectionHeading eyebrow="Pixolve insights" title="Catatan untuk tim yang membangun." body="Insight praktis tentang product strategy, engineering, dan cara membuat keputusan digital dengan lebih baik." />

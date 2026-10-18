@@ -312,7 +312,7 @@ export default function CaseStudyPage() {
       </div>
 
       {/* TENTANG */}
-      <section id="tentang" className="mx-auto grid max-w-6xl scroll-mt-32 items-center gap-16 px-5 py-28 lg:grid-cols-2 lg:px-8" data-testid="case-about">
+      <section id="tentang" className="mx-auto grid max-w-6xl scroll-mt-32 items-center gap-16 px-5 py-16 lg:grid-cols-2 lg:px-8" data-testid="case-about">
         <div className="relative">
           {aboutImg ? (
             <img src={aboutImg.src} alt={aboutImg.alt} loading="lazy" onError={() => markFailed(aboutImg.src)} className="cs-shadow-float aspect-[4/3] w-full rounded-3xl object-cover" />
@@ -330,7 +330,7 @@ export default function CaseStudyPage() {
 
       {/* GAMBAR PROYEK */}
       {n > 0 && (
-        <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-28" data-testid="case-gallery">
+        <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-16" data-testid="case-gallery">
           <div className="mx-auto max-w-6xl px-5 lg:px-8">
             <div>
               <p className="cs-eyebrow text-[#0e9f85]">Gambar proyek</p>
@@ -420,7 +420,7 @@ export default function CaseStudyPage() {
 
       {/* FITUR */}
       {features.length > 0 && (
-        <section id="fitur" className="mx-auto max-w-6xl scroll-mt-32 px-5 py-28 lg:px-8" data-testid="case-features">
+        <section id="fitur" className="mx-auto max-w-6xl scroll-mt-32 px-5 py-16 lg:px-8" data-testid="case-features">
           <p className="cs-eyebrow text-[#0e9f85]">Fitur utama</p>
           <h2 className="mt-4 max-w-2xl text-3xl font-bold text-[#002365] sm:text-4xl">Apa yang membuatnya berbeda</h2>
           <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -440,7 +440,7 @@ export default function CaseStudyPage() {
 
       {/* STACK */}
       {techStack.length > 0 && (
-        <section id="stack" className="cs-ink scroll-mt-32 px-5 py-28 lg:px-8" data-testid="case-techstack">
+        <section id="stack" className="cs-ink scroll-mt-32 px-5 py-16 lg:px-8" data-testid="case-techstack">
           <div className="mx-auto max-w-6xl">
             <p className="cs-eyebrow text-[#5eead4]">Tech stack</p>
             <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Dibangun dengan</h2>
@@ -459,7 +459,7 @@ export default function CaseStudyPage() {
       )}
 
       {/* RELATED CASE STUDIES */}
-      <section className="bg-[#eef3f9] px-5 py-28 lg:px-8" data-testid="case-related">
+      <section className="bg-[#eef3f9] px-5 py-16 lg:px-8" data-testid="case-related">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -508,7 +508,7 @@ export default function CaseStudyPage() {
       </section>
 
       {/* CTA */}
-      <section id="kontak" className="scroll-mt-32 bg-[linear-gradient(180deg,#002365_0%,#001a4d_60%,#00102f_100%)] px-5 py-24 text-white lg:px-8" data-testid="case-cta">
+      <section id="kontak" className="scroll-mt-32 bg-[linear-gradient(180deg,#002365_0%,#001a4d_60%,#00102f_100%)] px-5 py-14 text-white lg:px-8" data-testid="case-cta">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
             <div>

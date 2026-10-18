@@ -6,7 +6,7 @@ import { team } from "@/data/team";
 
 export function Team() {
   return (
-    <section id="tim" className="bg-white px-5 py-20 sm:py-28 lg:px-8" data-testid="team-section">
+    <section id="tim" className="bg-white px-5 py-12 sm:py-16 lg:px-8" data-testid="team-section">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Kolom Kiri: Judul, deskripsi, dan CTA */}

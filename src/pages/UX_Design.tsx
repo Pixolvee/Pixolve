@@ -36,7 +36,7 @@ export default function UiUxDesign() {
       <Header />
 
       {/* Hero */}
-      <section className="bg-[#00153d] pt-24 pb-24 text-white sm:pt-32 sm:pb-32">
+      <section className="bg-[#00153d] pt-20 pb-20 text-white sm:pt-24 sm:pb-24">
         <div className="mx-auto grid max-w-7xl gap-14 px-5 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:px-8">
           <div>
             <a
@@ -107,7 +107,7 @@ export default function UiUxDesign() {
       </section>
 
       {/* Tech stack + deliverables */}
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:py-28 lg:px-8">
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:py-16 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-[.8fr_1.2fr]">
           <div>
             <h2 className="font-heading text-2xl font-bold text-[#00153d]">Tools yang dipakai</h2>
@@ -145,7 +145,7 @@ export default function UiUxDesign() {
       </section>
 
       {/* CTA — full-width section, gradient menyatu ke footer */}
-      <section className="bg-[linear-gradient(180deg,#002365_0%,#001a4d_60%,#00102f_100%)] px-5 py-20 text-white sm:py-28 lg:px-8">
+      <section className="bg-[linear-gradient(180deg,#002365_0%,#001a4d_60%,#00102f_100%)] px-5 py-12 text-white sm:py-16 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div>
             <h2 className="font-heading text-3xl font-bold sm:text-4xl">

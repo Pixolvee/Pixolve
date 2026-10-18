@@ -14,7 +14,7 @@ export function Newsletter() {
   const submit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); mutation.mutate(email); };
 
   return (
-    <section id="newsletter" className="bg-[#00153d] px-5 py-16 text-white sm:py-20 lg:px-8" data-testid="newsletter-section">
+    <section id="newsletter" className="bg-[#00153d] px-5 py-10 text-white sm:py-14 lg:px-8" data-testid="newsletter-section">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 lg:flex-row lg:items-center">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#ffe400]">Tidak mau ketinggalan?</p>

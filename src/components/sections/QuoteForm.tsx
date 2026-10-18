@@ -59,7 +59,7 @@ export function QuoteForm() {
   };
 
   return (
-    <section id="quote-form" className="bg-[#ffe400] px-5 py-20 sm:py-28 lg:px-8" data-testid="quote-section">
+    <section id="quote-form" className="bg-[#ffe400] px-5 py-12 sm:py-16 lg:px-8" data-testid="quote-section">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#002365]" data-testid="quote-eyebrow">Start a conversation</p>

@@ -11,7 +11,7 @@ export function Portfolio() {
   const shown = caseStudies.slice(0, HOME_LIMIT);
 
   return (
-    <section id="portofolio" className="bg-[#eef3f9] px-5 py-20 sm:py-28 lg:px-8" data-testid="portfolio-section">
+    <section id="portofolio" className="bg-[#eef3f9] px-5 py-12 sm:py-16 lg:px-8" data-testid="portfolio-section">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           eyebrow="Studi kasus pilihan"

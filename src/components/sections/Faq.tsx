@@ -11,7 +11,7 @@ const faqs: Array<[string, string]> = [
 
 export function Faq() {
   return (
-    <section id="faq" className="mx-auto max-w-7xl px-5 py-20 sm:py-28 lg:px-8" data-testid="faq-section">
+    <section id="faq" className="mx-auto max-w-7xl px-5 py-12 sm:py-16 lg:px-8" data-testid="faq-section">
       <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
         <SectionHeading eyebrow="Pertanyaan umum" title="Hal-hal yang biasanya ingin Anda tahu sebelum mulai." body="Jika pertanyaan Anda belum ada di sini, tim kami siap menjawabnya saat konsultasi." />
         <div className="space-y-3" data-testid="faq-list">
