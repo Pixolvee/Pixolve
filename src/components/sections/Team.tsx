@@ -12,9 +12,9 @@ export function Team() {
           {/* Kolom Kiri: Judul, deskripsi, dan CTA */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
             <SectionHeading
-              eyebrow="Orang di balik produk"
-              title="Tim inti yang ikut duduk di meja Anda."
-              body="Kecil, senior, dan cukup dekat untuk mengerti konteks bisnis—cukup berpengalaman untuk mengantisipasi risikonya."
+              eyebrow="Tim Kami"
+              title="Bekerja langsung bersama tim yang mengeksekusi ide Anda."
+              body="Setiap solusi dikerjakan langsung oleh praktisi berpengalaman di bidang strategi produk, desain, dan arsitektur teknologi. Tanpa perantara atau birokrasi berbelit, memastikan komunikasi transparan dan hasil yang presisi."
             />
             <div className="mt-8">
               <a
@@ -22,7 +22,7 @@ export function Team() {
                 className="group inline-flex items-center gap-2 rounded-full bg-[#002365] px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#002365]/90 hover:shadow-md"
                 data-testid="team-hiring-link"
               >
-                Bergabung dengan kami
+                Konsultasi bersama tim
                 <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
             </div>
