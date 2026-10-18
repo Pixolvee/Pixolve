@@ -226,18 +226,13 @@ export default function CaseStudyPage() {
     );
   }
 
-  const idx = caseStudies.findIndex((c) => c.slug === study.slug);
-  const next = caseStudies.length > 1 ? caseStudies[(idx + 1) % caseStudies.length] : null;
   const cover = study.image && !failed[study.image] ? { src: study.image, alt: study.name } : undefined;
-  const heroImg = realSlides[0] ?? cover;
   const aboutImg = realSlides[1] ?? realSlides[0] ?? cover;
   const about = study.about ?? [study.text];
   const features = study.features ?? [];
   const techStack = study.techStack ?? [];
   const tags = study.tags ?? [];
   const related = caseStudies.filter((c) => c.slug !== study.slug).slice(0, 3);
-
-  const heroStats = ([["Status", study.status], ["Tahun", study.year], ["Tipe", study.type]] as [string, string | undefined][]).filter(([, v]) => v) as [string, string][];
   return (
     <main className="min-h-screen bg-white" data-testid="case-study-page">
       {/* Reading progress */}
@@ -247,69 +242,49 @@ export default function CaseStudyPage() {
 
       <Header />
 
-      {/* HERO */}
-      <section className="cs-ink relative flex min-h-[92vh] items-end overflow-hidden">
-        {heroImg && <img src={heroImg.src} alt={heroImg.alt} onError={() => markFailed(heroImg.src)} className="absolute inset-0 size-full scale-105 object-cover opacity-45" />}
-        <div className="absolute inset-0 text-white opacity-[0.07]" style={{ backgroundImage: "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#00102f] via-[#00102f]/70 to-transparent" />
-
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-32 pt-44 lg:px-8">
-          <div className="cs-rise mt-6">
-            <div className="flex flex-wrap items-center gap-3">
+      {/* HERO (Header Proyek Bersih) */}
+      <section className="border-b border-slate-100 bg-[#f8fafc] pt-28 pb-8 sm:pt-32 sm:pb-10" data-testid="case-hero">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Link
+                to="/portofolio"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#002365] transition-colors"
+              >
+                <ArrowLeft className="size-3.5" /> Portofolio
+              </Link>
+              <span className="text-slate-300">/</span>
               {study.category && (
-                <span className="inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-teal-400/10 px-4 py-1.5 text-xs font-semibold text-teal-300">
+                <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-3 py-1 text-xs font-bold text-[#002365]">
                   {study.category}
                 </span>
               )}
-              {study.status && (
-                <span className="cs-accent-grad inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-white" data-testid="case-status">
-                  <span className="size-1.5 animate-pulse rounded-full bg-white" /> {study.status}
+              {study.type && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
+                  <Layers className="size-3 text-slate-400" /> {study.type}
                 </span>
               )}
               {study.year && (
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white/80">
-                  <Calendar className="size-3" /> {study.year}
-                </span>
-              )}
-              {study.type && (
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white/80">
-                  <Layers className="size-3" /> {study.type}
+                <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
+                  <Calendar className="size-3 text-slate-400" /> {study.year}
                 </span>
               )}
             </div>
-            <h1 className="mt-7 max-w-4xl text-5xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-[5.5rem]" data-testid="case-title">{study.name}</h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75">{study.text}</p>
 
-            {/* Hero stats */}
-            {heroStats.length > 0 && (
-              <div className="mt-12 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-2 lg:grid-cols-4" data-testid="case-hero-stats">
-                {heroStats.map(([label, value]) => (
-                  <div key={label}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/50">{label}</p>
-                    <p className="mt-2 text-xl font-bold text-white">{value}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* STICKY SIDE NAV */}
-      <div className="sticky top-20 z-40 hidden border-b border-slate-100 bg-white/95 backdrop-blur lg:block">
-        <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-8 py-3 text-sm">
-
-          <div className="ml-auto flex items-center gap-2">
             <button
               onClick={() => { navigator.share?.({ title: study.name, url: window.location.href }); }}
-              className="grid size-9 place-items-center rounded-full border border-slate-200 text-slate-500 hover:border-[#002365] hover:text-[#002365]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:border-[#002365] hover:text-[#002365] transition-colors shadow-2xs"
               aria-label="Bagikan"
             >
-              <Share2 className="size-4" />
+              <Share2 className="size-3.5" /> Bagikan
             </button>
           </div>
+
+          <h1 className="mt-4 font-heading text-2xl font-extrabold tracking-tight text-[#002365] sm:text-4xl lg:text-5xl" data-testid="case-title">
+            {study.name}
+          </h1>
         </div>
-      </div>
+      </section>
 
       {/* TENTANG */}
       <section id="tentang" className="mx-auto grid max-w-6xl scroll-mt-32 items-center gap-16 px-5 py-16 lg:grid-cols-2 lg:px-8" data-testid="case-about">
@@ -503,48 +478,6 @@ export default function CaseStudyPage() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section id="kontak" className="scroll-mt-32 bg-[linear-gradient(180deg,#002365_0%,#001a4d_60%,#00102f_100%)] px-5 py-14 text-white lg:px-8" data-testid="case-cta">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-            <div>
-              <p className="cs-eyebrow text-[#ffe400]">Punya tantangan serupa?</p>
-              <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-                Mari kita rancang solusinya bersama.
-              </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-blue-100">
-                Konsultasi 60 menit gratis. Anda pulang dengan ringkasan kebutuhan dan
-                indikasi budget — tanpa kewajiban lanjut.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/#quote-form" className="inline-flex items-center gap-2 rounded-full bg-[#ffe400] px-7 py-4 text-sm font-bold text-[#00153d] transition-colors hover:bg-white">
-                  Konsultasi gratis <ArrowUpRight className="size-4" />
-                </Link>
-                <Link to="/portofolio" className="inline-flex items-center gap-2 rounded-full border border-white/20 px-7 py-4 text-sm font-bold text-white hover:border-[#ffe400] hover:text-[#ffe400]">
-                  Lihat portofolio lain
-                </Link>
-              </div>
-            </div>
-
-            {next && (
-              <Link
-                to={`/portofolio/${next.slug}`}
-                className="group rounded-3xl border border-white/15 bg-white/5 p-7 backdrop-blur transition-colors hover:border-[#ffe400]"
-                data-testid="case-next"
-              >
-                <p className="cs-eyebrow text-white/50">Proyek berikutnya</p>
-                <p className="mt-3 text-2xl font-bold text-white">{next.name}</p>
-                <p className="mt-3 line-clamp-2 text-sm leading-6 text-blue-100">{next.text}</p>
-                <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
-                  <span className="text-xs font-semibold text-[#ffe400]">{next.result}</span>
-                  <ArrowUpRight className="size-5 text-white transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                </div>
-              </Link>
-            )}
           </div>
         </div>
       </section>
