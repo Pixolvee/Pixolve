@@ -19,7 +19,7 @@ function normalizeGallery(gallery?: (string | GalleryItem)[], studyName = ""): G
       }
       return null
     })
-    .filter((x): x is Exclude<typeof x, null> => x !== null)
+    .filter((x): x is GalleryItem => x !== null)
 }
 
 /** Hook untuk daftar semua case studies */
