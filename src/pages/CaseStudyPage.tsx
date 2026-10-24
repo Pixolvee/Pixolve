@@ -119,7 +119,20 @@ export default function CaseStudyPage() {
   const [failed, setFailed] = useState<Record<string, boolean>>({})
   const [progress, setProgress] = useState(0)
 
-  // Cast gallery ke Slide[] karena sudah dinormalisasi oleh hook
+  // ============================================================
+  // GAMBAR UTAMA (di samping "Tentang proyek") → dari thumbnail
+  // Prioritas: thumbnail → image → undefined
+  // ============================================================
+  const mainImage: Slide | undefined =
+    study?.thumbnail && !failed[study.thumbnail]
+      ? { src: study.thumbnail, alt: study.name }
+      : study?.image && !failed[study.image]
+        ? { src: study.image, alt: study.name }
+        : undefined
+
+  // ============================================================
+  // GALERI (grid masonry di bawah) → dari gallery (Supabase)
+  // ============================================================
   const rawGallery = (Array.isArray(study?.gallery) ? study.gallery : []) as unknown as Slide[]
   const galleryFromDb = rawGallery.filter((g) => g?.src && !failed[g.src])
 
@@ -180,7 +193,6 @@ export default function CaseStudyPage() {
     return () => window.removeEventListener("keydown", onKey)
   }, [open, n])
 
-  // Loading state
   if (studyLoading) {
     return (
       <main className="grid min-h-screen place-items-center px-5 text-center">
@@ -206,8 +218,6 @@ export default function CaseStudyPage() {
     )
   }
 
-  const cover = study.image && !failed[study.image] ? { src: study.image, alt: study.name } : undefined
-  const aboutImg = realSlides[1] ?? realSlides[0] ?? cover
   const textContent = study.text_content || study.textContent || study.text || ""
   const features = study.features ?? []
   const techStack = study.techStack ?? []
@@ -266,8 +276,14 @@ export default function CaseStudyPage() {
 
         <div className="mt-10 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="relative">
-            {aboutImg ? (
-              <img src={aboutImg.src} alt={aboutImg.alt} loading="lazy" onError={() => markFailed(aboutImg.src)} className="cs-shadow-float aspect-[4/3] w-full rounded-3xl object-cover" />
+            {mainImage ? (
+              <img
+                src={mainImage.src}
+                alt={mainImage.alt}
+                loading="lazy"
+                onError={() => markFailed(mainImage.src)}
+                className="cs-shadow-float aspect-[4/3] w-full rounded-3xl bg-slate-50 object-contain"
+              />
             ) : (
               <WindowMock name={study.name} />
             )}
