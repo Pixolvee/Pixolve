@@ -67,6 +67,8 @@ export interface CaseStudy {
   beforeImage?: string;
   afterImage?: string;
   text: string;
+  textContent?: string;
+  text_content?: string;
   year?: string;
   result?: string;
   before?: string;
@@ -90,9 +92,10 @@ export interface CaseStudy {
 }
 
 
-export const caseStudies: CaseStudy[] = [
+export const caseStudies: CaseStudy[] = [];
+
   
-  {
+/*
     slug: "kari-kambing-cb-sp-ektreun",
     name: "Kari Kambing CB SP Ektreun",
     category: "Web Development",
@@ -294,6 +297,6 @@ export const caseStudies: CaseStudy[] = [
     color: "from-[#ffe400] to-[#ffb700]",
     text: "Proyek ini berfokus pada pengembangan platform web untuk donasi online. Platform ini memungkinkan pengguna memberikan sumbangan dengan mudah untuk berbagai tujuan serta memantau donasi yang telah mereka berikan. Sistem dikembangkan menggunakan teknologi web modern seperti HTML, CSS, dan Golang.",
   },
-];
+*/
 
 export const getCaseStudy = (slug: string) => caseStudies.find((c) => c.slug === slug);

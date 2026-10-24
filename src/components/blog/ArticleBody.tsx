@@ -1,6 +1,6 @@
-import type { Block } from "@/data/posts";
+import type { PostBlock } from "@/lib/types";
 
-function renderBlock(block: Block, i: number) {
+function renderBlock(block: PostBlock, i: number) {
   switch (block.type) {
     case "h2":
       return <h2 key={i} className="mt-12 font-sans text-2xl font-bold tracking-tight text-slate-900">{block.text}</h2>;
@@ -21,7 +21,7 @@ function renderBlock(block: Block, i: number) {
   }
 }
 
-export function ArticleBody({ content }: { content: Block[] }) {
+export function ArticleBody({ content }: { content: PostBlock[] }) {
   return (
     <div className="mt-10 font-serif text-[21px] leading-[1.75] text-slate-800" data-testid="article-body">
       {content.map(renderBlock)}

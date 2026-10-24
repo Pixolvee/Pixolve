@@ -72,7 +72,7 @@ export default defineConfig(async () => {
       // absolute backend URL. Target is the FastAPI dev server (supervisor: backend).
       proxy: {
         "/api": {
-          target: "http://localhost:8000", // Sesuaikan ke port 8000 (port uvicorn FastAPI kamu)
+          target: "http://localhost:8001", // Backend Express.js berjalan di port 8001
           changeOrigin: true,
         },
       },

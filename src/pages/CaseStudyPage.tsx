@@ -3,9 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft, Check, ChevronLeft, ChevronRight, X,
   Calendar, Layers, Share2,
-  ArrowRight, Building2,
+  ArrowRight, Building2, Loader2,
 } from "lucide-react";
-import { caseStudies, getCaseStudy } from "@/data/caseStudies";
+import { useCaseStudies, useCaseStudy } from "@/lib/hooks/useCaseStudies";
 import "@/styles/ase-study.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -116,7 +116,8 @@ function WindowMock({ name }: { name: string }) {
 
 export default function CaseStudyPage() {
   const { slug = "" } = useParams<{ slug: string }>();
-  const study = getCaseStudy(slug);
+  const { data: study, isLoading: studyLoading } = useCaseStudy(slug);
+  const { data: allCaseStudies = [] } = useCaseStudies();
 
   const [open, setOpen] = useState<number | null>(null);
   const [failed, setFailed] = useState<Record<string, boolean>>({});
@@ -148,7 +149,7 @@ export default function CaseStudyPage() {
     document.title = `${study.name} — Studi Kasus Pixolve`;
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = study.text;
+    meta.content = study.textContent || study.text || study.text_content || "";
   }, [study]);
 
   // Reading progress + scroll spy
@@ -180,6 +181,18 @@ export default function CaseStudyPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, n]);
 
+  // Loading state saat data sedang di-fetch dari backend
+  if (studyLoading) {
+    return (
+      <main className="grid min-h-screen place-items-center px-5 text-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="size-10 animate-spin text-[#002365]/40" />
+          <p className="text-sm text-slate-500">Memuat studi kasus…</p>
+        </div>
+      </main>
+    );
+  }
+
   if (!study) {
     return (
       <main className="grid min-h-screen place-items-center px-5 text-center" data-testid="case-not-found">
@@ -196,11 +209,11 @@ export default function CaseStudyPage() {
 
   const cover = study.image && !failed[study.image] ? { src: study.image, alt: study.name } : undefined;
   const aboutImg = realSlides[1] ?? realSlides[0] ?? cover;
-  const about = study.about ?? [study.text];
+  const textContent = study.text_content || study.textContent || study.text || "";
   const features = study.features ?? [];
   const techStack = study.techStack ?? [];
   const tags = study.tags ?? [];
-  const related = caseStudies.filter((c) => c.slug !== study.slug).slice(0, 2);
+  const related = allCaseStudies.filter((c) => c.slug !== study.slug).slice(0, 2);
   return (
     <main className="min-h-screen bg-white" data-testid="case-study-page">
       {/* Reading progress */}
@@ -265,7 +278,9 @@ export default function CaseStudyPage() {
           <div>
             <p className="cs-eyebrow text-[#0e9f85]">Tentang proyek</p>
             <h2 className="mt-3 text-2xl font-bold text-[#002365] sm:text-3xl">Kenali {study.name}</h2>
-            <div className="mt-5 space-y-4 text-base leading-7 text-slate-600 sm:text-[17px] sm:leading-8">{about.map((p) => <p key={p}>{p}</p>)}</div>
+            <div className="mt-5 space-y-4 text-base leading-7 text-slate-600 sm:text-[17px] sm:leading-8">
+              <p>{textContent}</p>
+            </div>
             {tags.length > 0 && <div className="mt-6 flex flex-wrap gap-2">{tags.map((t) => <span key={t} className="rounded-full bg-[#eef3f9] px-3.5 py-1.5 text-xs font-semibold text-[#002365]">{t}</span>)}</div>}
           </div>
         </div>
@@ -418,7 +433,7 @@ export default function CaseStudyPage() {
                       {r.name}
                     </h3>
                     <p className="mt-1 line-clamp-1 text-xs text-slate-500">
-                      {r.text}
+                      {r.textContent || r.text || r.text_content}
                     </p>
                   </div>
                 </div>

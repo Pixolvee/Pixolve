@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Loader2 } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import {
-  caseStudies,
   PORTFOLIO_CATEGORIES,
   matchCategory,
 } from "@/data/caseStudies";
+import { useCaseStudies } from "@/lib/hooks/useCaseStudies";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import "@/styles/ase-study.css";
@@ -14,6 +14,7 @@ import "@/styles/ase-study.css";
 export default function ProjectsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentCategory = searchParams.get("kategori") || "all";
+  const { data: caseStudies = [], isLoading } = useCaseStudies();
 
   const activeCategoryId = PORTFOLIO_CATEGORIES.some((c) => c.id === currentCategory)
     ? currentCategory
@@ -39,7 +40,7 @@ export default function ProjectsPage() {
 
   const filteredStudies = useMemo(() => {
     return caseStudies.filter((item) => matchCategory(item, activeCategoryId));
-  }, [activeCategoryId]);
+  }, [activeCategoryId, caseStudies]);
 
   return (
     <main className="min-h-screen bg-white" data-testid="projects-page">
@@ -105,7 +106,11 @@ export default function ProjectsPage() {
           </div>
 
           {/* Grid Proyek (1 baris 4 card di desktop) */}
-          {filteredStudies.length > 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="size-8 animate-spin text-[#002365]/40" />
+            </div>
+          ) : filteredStudies.length > 0 ? (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="projects-grid">
               {filteredStudies.map((item, index) => (
                 <ProjectCard key={item.slug} item={item} index={index} compact />

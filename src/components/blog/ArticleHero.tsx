@@ -1,7 +1,10 @@
-import type { Post } from "@/data/posts";
+import type { PostDetail } from "@/lib/types";
 
-export function ArticleHero({ post }: { post: Post }) {
+export function ArticleHero({ post }: { post: PostDetail }) {
   const initials = post.author.name.split(" ").map((w) => w[0]).join("").slice(0, 2);
+  const date = post.published_at
+    ? new Date(post.published_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })
+    : "";
 
   return (
     <>
@@ -17,7 +20,7 @@ export function ArticleHero({ post }: { post: Post }) {
         <div className="grid size-11 place-items-center rounded-full bg-[#002365] text-sm font-bold text-white">{initials}</div>
         <div className="text-sm">
           <p className="font-semibold text-slate-900">{post.author.name}</p>
-          <p className="text-slate-500">{post.author.role} · {post.date} · {post.duration}</p>
+          <p className="text-slate-500">{post.author.role} · {date} · {post.duration}</p>
         </div>
       </div>
     </>

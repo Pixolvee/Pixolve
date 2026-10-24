@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { Post } from "@/data/posts";
+import type { PostSummary } from "@/lib/types";
 
-export function RelatedPosts({ posts }: { posts: Post[] }) {
+export function RelatedPosts({ posts }: { posts: PostSummary[] }) {
   if (posts.length === 0) return null;
 
   return (

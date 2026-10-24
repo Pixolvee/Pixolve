@@ -1,10 +1,27 @@
-// src/components/Team.tsx
+// src/components/sections/Team.tsx
 
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { team } from "@/data/team";
+import { useTeam } from "@/lib/hooks/useTeam";
+
+function TeamCardSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="aspect-[4/4.2] rounded-3xl bg-slate-100" />
+      <div className="mt-5 flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <div className="h-4 w-32 rounded bg-slate-100" />
+          <div className="h-3 w-24 rounded bg-slate-100" />
+        </div>
+        <div className="h-4 w-6 rounded bg-slate-100" />
+      </div>
+    </div>
+  );
+}
 
 export function Team() {
+  const { data: members, isLoading } = useTeam();
+
   return (
     <section id="tim" className="bg-white px-5 py-12 sm:py-16 lg:px-8" data-testid="team-section">
       <div className="mx-auto max-w-7xl">
@@ -31,33 +48,54 @@ export function Team() {
           {/* Kolom Kanan: Foto dan kartu anggota tim */}
           <div className="lg:col-span-7">
             <div className="grid gap-6 sm:grid-cols-2" data-testid="team-grid">
-              {team.map((person, index) => (
-                <article key={person.name} className="group" data-testid={`team-card-${index + 1}`}>
-                  <div className="relative aspect-[4/4.2] overflow-hidden rounded-3xl bg-[#eef3f9]">
-                    <img
-                      src={person.image}
-                      alt={person.name}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <a
-                      href={person.portfolioUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-[#ffe400] text-[#002365] shadow-md transition-transform hover:scale-110"
-                      aria-label={`Portofolio ${person.name}`}
-                    >
-                      <ExternalLink className="size-4" />
-                    </a>
-                  </div>
-                  <div className="mt-5 flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-bold text-[#002365]">{person.name}</h3>
-                      <p className="mt-1 text-sm text-slate-500">{person.role}</p>
-                    </div>
-                    <span className="font-mono text-xs text-slate-400">0{index + 1}</span>
-                  </div>
-                </article>
-              ))}
+              {isLoading
+                ? Array.from({ length: 2 }).map((_, i) => <TeamCardSkeleton key={i} />)
+                : (members ?? []).map((person, index) => (
+                    <article key={person.id} className="group" data-testid={`team-card-${index + 1}`}>
+                      <div className="relative aspect-[4/4.2] overflow-hidden rounded-3xl bg-[#eef3f9]">
+                        {person.image && (
+                          <img
+                            src={person.image}
+                            alt={person.name}
+                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                          />
+                        )}
+                        {person.portfolio_url && (
+                          <a
+                            href={person.portfolio_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-[#ffe400] text-[#002365] shadow-md transition-transform hover:scale-110"
+                            aria-label={`Portofolio ${person.name}`}
+                          >
+                            <ExternalLink className="size-4" />
+                          </a>
+                        )}
+                      </div>
+                      <div className="mt-5 flex items-start justify-between gap-4">
+                        <div>
+                          <h3 className="font-bold text-[#002365]">{person.name}</h3>
+                          <p className="mt-1 text-sm text-slate-500">{person.role}</p>
+                          {person.bio && (
+                            <p className="mt-2 text-xs leading-relaxed text-slate-400">{person.bio}</p>
+                          )}
+                          {person.skills && person.skills.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {person.skills.slice(0, 4).map((skill) => (
+                                <span
+                                  key={skill}
+                                  className="rounded-full bg-[#eef3f9] px-2 py-0.5 text-[10px] font-medium text-[#002365]"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <span className="font-mono text-xs text-slate-400">0{index + 1}</span>
+                      </div>
+                    </article>
+                  ))}
             </div>
           </div>
         </div>

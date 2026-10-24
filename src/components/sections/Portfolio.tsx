@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
-import { caseStudies } from "@/data/caseStudies";
+import { useCaseStudies } from "@/lib/hooks/useCaseStudies";
 
 // Jumlah proyek yang tampil di beranda (4 kartu per baris di desktop). Sisanya ada di halaman "Semua proyek".
 const HOME_LIMIT = 4;
 
 export function Portfolio() {
+  const { data: caseStudies = [], isLoading } = useCaseStudies();
   const shown = caseStudies.slice(0, HOME_LIMIT);
 
   return (
@@ -34,11 +35,17 @@ export function Portfolio() {
         </div>
 
         {/* Grid 4 Kartu Proyek */}
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="portfolio-grid">
-          {shown.map((item, index) => (
-            <ProjectCard key={item.slug} item={item} index={index} compact />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="mt-8 flex items-center justify-center py-20">
+            <Loader2 className="size-8 animate-spin text-[#002365]/40" />
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="portfolio-grid">
+            {shown.map((item, index) => (
+              <ProjectCard key={item.slug} item={item} index={index} compact />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

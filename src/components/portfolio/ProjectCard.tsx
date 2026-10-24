@@ -121,7 +121,7 @@ export function ProjectCard({
               : "mt-3 line-clamp-3 text-sm leading-6"
           }`}
         >
-          {item.text}
+          {item.textContent || item.text || item.text_content}
         </p>
       </div>
     </article>

@@ -8,9 +8,9 @@ import { Services } from "@/components/sections/Services";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { QuoteForm } from "@/components/sections/QuoteForm";
 import { Team } from "@/components/sections/Team";
+import { Blog } from "@/components/sections/Blog";
+import { Newsletter } from "@/components/sections/Newsletter";
 // import { Faq } from "@/components/sections/Faq";
-// import { Blog } from "@/components/sections/Blog";
-// import { Newsletter } from "@/components/sections/Newsletter";
 
 export default function Home() {
   return (
@@ -19,12 +19,13 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        {/* <Blog /> */}
+        <Blog />
         <Services />
         <Portfolio />
         <Team />
         {/* <Faq /> */}
         <QuoteForm />
+        <Newsletter />
       </main>
       <Footer />
       <WhatsappWidget />
