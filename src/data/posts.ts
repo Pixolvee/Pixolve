@@ -11,11 +11,8 @@ export type Post = {
   excerpt: string;
   duration: string;
   date: string;
-  author: { name: string; role: string };
   content: Block[];
 };
-
-const author = { name: "Tim Pixolve", role: "Product & Engineering" };
 
 export const posts: Post[] = [];
 

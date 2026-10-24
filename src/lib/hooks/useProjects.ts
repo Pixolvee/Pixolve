@@ -11,23 +11,6 @@ import { apiGet } from "@/lib/api";
 import type { ApiResponse, Project } from "@/lib/types";
 // import { caseStudies as staticProjects } from "@/data/caseStudies"; // removed unused import
 
-/** Mengubah data statis menjadi shape Project yang konsisten */
-function staticToProject(p: (typeof staticProjects)[number]): Project {
-  return {
-    id: String(p.id ?? Math.random()),
-    slug: p.slug,
-    title: p.title,
-    category: p.category,
-    short_description: p.shortDescription ?? "",
-    image: p.image,
-    url: p.url,
-    order_index: p.orderIndex ?? 0,
-    is_active: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  };
-}
-
 /** Hook untuk daftar portfolio */
 export function useProjects() {
   return useQuery({

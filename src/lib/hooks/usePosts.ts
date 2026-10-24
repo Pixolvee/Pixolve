@@ -11,22 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "@/lib/api";
 import type { ApiListResponse, ApiResponse, PostDetail, PostSummary } from "@/lib/types";
 // Fallback data statis jika backend tidak tersedia
-import { posts as staticPosts } from "@/data/posts";
 
 const STALE_MS = 5 * 60 * 1000; // 5 menit
-
-// ─── Helper: mapping dari data statis ke PostSummary ───────────────────────
-function staticToSummary(p: (typeof staticPosts)[number]): PostSummary {
-  return {
-    slug: p.slug,
-    category: p.category,
-    title: p.title,
-    excerpt: p.excerpt,
-    duration: p.duration,
-    author: p.author,
-    published_at: p.date,
-  };
-}
 
 // ─── Hook: Daftar artikel (untuk Blog section & Projects grid) ──────────────
 export function usePosts(params?: { page?: number; limit?: number; category?: string; search?: string }) {
