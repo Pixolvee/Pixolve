@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { apiGet } from "@/lib/api"
 import type { ApiResponse } from "@/lib/types"
-import type { CaseStudy, GalleryItem } from "@/data/caseStudies"
+import type { CaseStudy } from "@/data/caseStudies"
 
 const STALE_MS = 10 * 60 * 1000
 

@@ -61,7 +61,10 @@ export function ProjectCard({
   index: number;
   compact?: boolean;
 }) {
-  const originalSrc = item.image ?? item.gallery?.[0]?.src;
+  const firstGalleryItem = item.gallery?.[0];
+  const originalSrc =
+    item.image ??
+    (typeof firstGalleryItem === "string" ? firstGalleryItem : firstGalleryItem?.src);
   const thumbnailSrc = item.thumbnail ?? (item.slug ? `/thumbnails/${item.slug}.webp` : undefined);
 
   return (

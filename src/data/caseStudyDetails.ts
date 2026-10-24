@@ -10,8 +10,7 @@ export type CaseStudyDetail = {
   about?: string[]
   features?: string[]
   techStack?: { label: string; items: string[] }[]
-  // Ganti dari { src: string; alt: string }[] menjadi GalleryItem[]
-  gallery?: GalleryItem[]
+  gallery?: (string | GalleryItem)[]
   demoUrl?: string
   githubUrl?: string
   client?: string
