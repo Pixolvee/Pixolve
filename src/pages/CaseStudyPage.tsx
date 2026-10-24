@@ -121,7 +121,6 @@ export default function CaseStudyPage() {
 
   // ============================================================
   // GAMBAR UTAMA (di samping "Tentang proyek") → dari thumbnail
-  // Prioritas: thumbnail → image → undefined
   // ============================================================
   const mainImage: Slide | undefined =
     study?.thumbnail && !failed[study.thumbnail]
@@ -131,7 +130,7 @@ export default function CaseStudyPage() {
         : undefined
 
   // ============================================================
-  // GALERI (grid masonry di bawah) → dari gallery (Supabase)
+  // GALERI (grid di bawah) → dari gallery (Supabase)
   // ============================================================
   const rawGallery = (Array.isArray(study?.gallery) ? study.gallery : []) as unknown as Slide[]
   const galleryFromDb = rawGallery.filter((g) => g?.src && !failed[g.src])
@@ -303,7 +302,7 @@ export default function CaseStudyPage() {
         </div>
       </section>
 
-      {/* GALERI */}
+      {/* GALERI — Grid 4 Kolom */}
       {n > 0 && (
         <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-14 sm:py-16" data-testid="case-gallery">
           <div className="mx-auto max-w-6xl px-5 lg:px-8">
@@ -317,7 +316,8 @@ export default function CaseStudyPage() {
               </p>
             </div>
 
-            <div className="mt-8 columns-1 gap-5 sm:columns-2 md:columns-3 lg:columns-4 [column-fill:_balance]">
+            {/* Grid: 1 kolom (mobile) → 2 (sm) → 3 (md) → 4 (lg ke atas) */}
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g, i) => (
                 <div
                   key={`${g.src}-${i}`}
@@ -327,16 +327,16 @@ export default function CaseStudyPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(i) }
                   }}
-                  className="group mb-5 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0e9f85]/40 hover:shadow-xl sm:p-3"
+                  className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0e9f85]/40 hover:shadow-xl sm:p-3"
                   data-testid={`case-image-${i + 1}`}
                 >
-                  <div className="overflow-hidden rounded-xl bg-slate-100">
+                  <div className="flex-1 overflow-hidden rounded-xl bg-slate-100 aspect-square">
                     <img
                       src={g.src}
                       alt={g.alt}
                       loading="lazy"
                       onError={() => markFailed(g.src)}
-                      className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
                   <div className="flex items-center justify-between px-1.5 pb-1 pt-3">
