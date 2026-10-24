@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, BookOpenText } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+// import { SectionHeading } from "@/components/ui/SectionHeading";
 import { usePosts } from "@/lib/hooks/usePosts";
 
 function PostCardSkeleton() {
@@ -29,10 +29,10 @@ export function Blog() {
   return (
     <section id="blog" className="bg-[#eef3f9] px-5 py-12 sm:py-16 lg:px-8" data-testid="insights-section">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
+        {/* <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
           <SectionHeading eyebrow="Pixolve insights" title="Catatan untuk tim yang membangun." body="Insight praktis tentang product strategy, engineering, dan cara membuat keputusan digital dengan lebih baik." />
           <a href="#newsletter" className="text-sm font-bold text-[#002365]" data-testid="blog-view-all-link">Lihat semua insight <ArrowUpRight className="ml-1 inline size-4" /></a>
-        </div>
+        </div> */}
         <div className="mt-12 grid gap-5 lg:grid-cols-3" data-testid="blog-grid">
           {isLoading
             ? Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)
