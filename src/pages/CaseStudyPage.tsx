@@ -3,8 +3,7 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import {
   ArrowLeft, Check, ChevronLeft, ChevronRight, X,
-  Calendar, Layers, Share2,
-  ArrowRight, Building2, Loader2,
+  Calendar, Layers, Share2, ArrowRight, Building2, Loader2,
 } from "lucide-react"
 import { useCaseStudies, useCaseStudy } from "@/lib/hooks/useCaseStudies"
 import "@/styles/ase-study.css"
@@ -16,7 +15,14 @@ const FILL_WITH_SAMPLES = true
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
-function sampleDesign(name: string, variant: number): { src: string; alt: string } {
+/** Tipe lokal untuk slide: alt wajib (sudah dinormalisasi) */
+type Slide = { src: string; alt: string }
+
+/**
+ * Desain contoh (SVG) dalam warna brand — dipakai sebagai pengisi sampai gambar asli tersedia.
+ * variant: 0 landing page · 1 dashboard · 2 aplikasi mobile · 3 katalog · 4 formulir/detail
+ */
+function sampleDesign(name: string, variant: number): Slide {
   const NAVY = "#002365", TEAL = "#0e9f85", YEL = "#ffe400", SOFT = "#eef3f9"
   const o: string[] = []
   const R = (x: number, y: number, w: number, h: number, f: string, rx = 10, op = 1) =>
@@ -113,49 +119,37 @@ export default function CaseStudyPage() {
   const [failed, setFailed] = useState<Record<string, boolean>>({})
   const [progress, setProgress] = useState(0)
 
-  // Normalisasi slide galeri (pastikan format { src, alt })
-  const normalizeSlide = (item: any, idx: number): { src: string; alt: string } | null => {
-    if (!item) return null
-    if (typeof item === "string") {
-      return { src: item, alt: `Galeri ${idx + 1} ${study?.name ?? ""}`.trim() }
-    }
-    if (typeof item === "object" && item.src) {
-      return { src: item.src, alt: item.alt ?? `Galeri ${idx + 1}` }
-    }
-    return null
-  }
+  // Cast gallery ke Slide[] karena sudah dinormalisasi oleh hook
+  const rawGallery = (Array.isArray(study?.gallery) ? study.gallery : []) as unknown as Slide[]
+  const galleryFromDb = rawGallery.filter((g) => g?.src && !failed[g.src])
 
-  const rawGallery = Array.isArray(study?.gallery) ? study.gallery : []
-  const galleryFromDb = rawGallery
-    .map((item, idx) => normalizeSlide(item, idx))
-    .filter((x): x is { src: string; alt: string } => x !== null)
-    .filter((g) => !failed[g.src])
-
-  const baseSlides: { src: string; alt: string }[] =
+  const baseSlides: Slide[] =
     galleryFromDb.length > 0
       ? galleryFromDb
       : ([
           study?.image && { src: study.image, alt: `Tampilan ${study.name}` },
           study?.afterImage && { src: study.afterImage, alt: `Antarmuka ${study.name}` },
-        ].filter(Boolean) as { src: string; alt: string }[])
+        ].filter(Boolean) as Slide[])
 
-  // Buang duplikat
   const realSlides = baseSlides.filter((g, i, a) => a.findIndex((x) => x.src === g.src) === i)
 
-  // Isi kekurangan dengan desain contoh
-  const order = study?.category === "Mobile App"
-    ? [2, 0, 1, 3, 4]
-    : study?.category === "Data Science & AI"
-      ? [1, 0, 3, 2, 4]
-      : [0, 1, 3, 4, 2]
-  const samples = FILL_WITH_SAMPLES && study
-    ? order.slice(0, Math.max(0, MIN_SLIDES - realSlides.length)).map((v) => sampleDesign(study.name, v))
-    : []
+  const order =
+    study?.category === "Mobile App"
+      ? [2, 0, 1, 3, 4]
+      : study?.category === "Data Science & AI"
+        ? [1, 0, 3, 2, 4]
+        : [0, 1, 3, 4, 2]
 
-  const gallery = [...realSlides, ...samples]
+  const samples =
+    FILL_WITH_SAMPLES && study
+      ? order.slice(0, Math.max(0, MIN_SLIDES - realSlides.length)).map((v) => sampleDesign(study.name, v))
+      : []
+
+  const gallery: Slide[] = [...realSlides, ...samples]
   const n = gallery.length
   const markFailed = (src: string) => setFailed((f) => ({ ...f, [src]: true }))
 
+  // SEO
   useEffect(() => {
     if (!study) { document.title = "Studi kasus tidak ditemukan"; return }
     document.title = `${study.name} — Studi Kasus Pixolve`
@@ -164,6 +158,7 @@ export default function CaseStudyPage() {
     meta.content = study.textContent || study.text || study.text_content || ""
   }, [study])
 
+  // Reading progress
   useEffect(() => {
     const onProgress = () => {
       const h = document.documentElement.scrollHeight - window.innerHeight
@@ -173,6 +168,7 @@ export default function CaseStudyPage() {
     return () => window.removeEventListener("scroll", onProgress)
   }, [])
 
+  // Keyboard for lightbox
   useEffect(() => {
     if (open === null || n === 0) return
     const onKey = (e: KeyboardEvent) => {
@@ -184,6 +180,7 @@ export default function CaseStudyPage() {
     return () => window.removeEventListener("keydown", onKey)
   }, [open, n])
 
+  // Loading state
   if (studyLoading) {
     return (
       <main className="grid min-h-screen place-items-center px-5 text-center">
@@ -219,21 +216,28 @@ export default function CaseStudyPage() {
 
   return (
     <main className="min-h-screen bg-white" data-testid="case-study-page">
+      {/* Reading progress */}
       <div className="fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent">
         <div className="h-full bg-[#ffe400] transition-[width] duration-150" style={{ width: `${progress}%` }} />
       </div>
 
       <Header />
 
+      {/* HEADER & TENTANG PROYEK */}
       <section id="tentang" className="mx-auto max-w-6xl px-5 pt-28 pb-14 sm:pt-32 sm:pb-16 lg:px-8" data-testid="case-about">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-5">
           <div className="flex flex-wrap items-center gap-2.5">
-            <Link to="/portofolio" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#002365]">
+            <Link
+              to="/portofolio"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#002365]"
+            >
               <ArrowLeft className="size-3.5" /> Portofolio
             </Link>
             <span className="text-slate-300">/</span>
             {study.category && (
-              <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-3 py-1 text-xs font-bold text-[#002365]">{study.category}</span>
+              <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-3 py-1 text-xs font-bold text-[#002365]">
+                {study.category}
+              </span>
             )}
             {study.type && (
               <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600">
@@ -370,7 +374,7 @@ export default function CaseStudyPage() {
         </section>
       )}
 
-      {/* RELATED */}
+      {/* RELATED CASE STUDIES */}
       <section className="border-t border-slate-100 bg-[#f8fafc] px-5 py-14 lg:px-8" data-testid="case-related">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -421,6 +425,7 @@ export default function CaseStudyPage() {
 
       <Footer />
 
+      {/* FLOATING SHARE (mobile) */}
       <button
         onClick={() => { navigator.share?.({ title: study.name, url: window.location.href }) }}
         className="fixed bottom-24 right-5 z-40 grid size-12 place-items-center rounded-full bg-[#002365] text-white shadow-2xl transition-transform hover:scale-105 lg:hidden"

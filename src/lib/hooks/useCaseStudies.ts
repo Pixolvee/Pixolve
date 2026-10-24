@@ -4,25 +4,40 @@ import { apiGet } from "@/lib/api"
 import type { ApiResponse } from "@/lib/types"
 import type { CaseStudy, GalleryItem } from "@/data/caseStudies"
 
-const STALE_MS = 10 * 60 * 1000 // 10 menit
+const STALE_MS = 10 * 60 * 1000
+
+/** Hasil normalisasi: alt sudah pasti string */
+type NormalizedSlide = { src: string; alt: string }
 
 /** Normalisasi gallery: dari string URL atau object jadi { src, alt } */
-function normalizeGallery(gallery?: (string | GalleryItem)[], studyName = ""): GalleryItem[] {
+function normalizeGallery(gallery: unknown, studyName = ""): NormalizedSlide[] {
   if (!Array.isArray(gallery)) return []
-  return gallery
-    .map((item, idx) => {
-      if (typeof item === "string" && item.trim()) {
-        return { src: item, alt: `Galeri ${idx + 1} ${studyName}`.trim() }
-      }
-      if (item && typeof item === "object" && typeof item.src === "string") {
-        return { src: item.src, alt: item.alt ?? `Galeri ${idx + 1}` }
-      }
-      return null
-    })
-    .filter((x): x is GalleryItem => x !== null)
+
+  const result: NormalizedSlide[] = []
+
+  gallery.forEach((item, idx) => {
+    if (typeof item === "string" && item.trim()) {
+      result.push({
+        src: item,
+        alt: `Galeri ${idx + 1} ${studyName}`.trim(),
+      })
+    } else if (
+      item &&
+      typeof item === "object" &&
+      typeof (item as any).src === "string" &&
+      (item as any).src.trim()
+    ) {
+      const obj = item as { src: string; alt?: string }
+      result.push({
+        src: obj.src,
+        alt: obj.alt && obj.alt.trim() ? obj.alt : `Galeri ${idx + 1}`,
+      })
+    }
+  })
+
+  return result
 }
 
-/** Hook untuk daftar semua case studies */
 export function useCaseStudies() {
   return useQuery<CaseStudy[]>({
     queryKey: ["case-studies"],
@@ -39,7 +54,6 @@ export function useCaseStudies() {
   })
 }
 
-/** Hook untuk satu case study berdasarkan slug */
 export function useCaseStudy(slug: string) {
   return useQuery<CaseStudy>({
     queryKey: ["case-study", slug],

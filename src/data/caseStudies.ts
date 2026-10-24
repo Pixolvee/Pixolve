@@ -1,4 +1,5 @@
 // src/data/caseStudies.ts
+
 export interface PortfolioCategory {
   id: string
   label: string
@@ -38,6 +39,11 @@ export function matchCategory(item: CaseStudy, categoryId: string): boolean {
   return Boolean(primaryMatch || multiMatch)
 }
 
+// ============================================================
+// TIPE GALLERY
+// ============================================================
+// `alt` dibuat OPSIONAL karena data dari Supabase berupa string URL saja.
+// Saat masuk ke komponen, alt akan diisi otomatis via normalisasi.
 export interface GalleryItem {
   src: string
   alt?: string
@@ -73,7 +79,7 @@ export interface CaseStudy {
   /**
    * Galeri gambar. Bisa berupa:
    * - Array of string (URL dari Supabase)
-   * - Array of object { src, alt } (data lama)
+   * - Array of object { src, alt? } (data lama)
    */
   gallery?: (string | GalleryItem)[]
 
