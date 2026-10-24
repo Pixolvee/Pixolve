@@ -317,7 +317,7 @@ export default function CaseStudyPage() {
               </p>
             </div>
 
-            <div className="mt-8 columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4 [column-fill:_balance]">
+            <div className="mt-8 columns-1 gap-5 sm:columns-2 md:columns-3 lg:columns-4 [column-fill:_balance]">
               {gallery.map((g, i) => (
                 <div
                   key={`${g.src}-${i}`}
