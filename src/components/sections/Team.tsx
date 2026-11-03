@@ -47,9 +47,9 @@ export function Team() {
 
           {/* Kolom Kanan: Foto dan kartu anggota tim */}
           <div className="lg:col-span-7">
-            <div className="grid gap-6 sm:grid-cols-2" data-testid="team-grid">
+            <div className="grid gap-4 sm:grid-cols-3" data-testid="team-grid">
               {isLoading
-                ? Array.from({ length: 2 }).map((_, i) => <TeamCardSkeleton key={i} />)
+                ? Array.from({ length: 3 }).map((_, i) => <TeamCardSkeleton key={i} />)
                 : (members ?? []).map((person, index) => (
                     <article key={person.id} className="group" data-testid={`team-card-${index + 1}`}>
                       <div className="relative aspect-[4/4.2] overflow-hidden rounded-3xl bg-[#eef3f9]">
@@ -72,10 +72,10 @@ export function Team() {
                           </a>
                         )}
                       </div>
-                      <div className="mt-5 flex items-start justify-between gap-4">
+                      <div className="mt-4 flex items-start justify-between gap-2">
                         <div>
-                          <h3 className="font-bold text-[#002365]">{person.name}</h3>
-                          <p className="mt-1 text-sm text-slate-500">{person.role}</p>
+                          <h3 className="font-bold text-[#002365] text-sm sm:text-base leading-snug">{person.name}</h3>
+                          <p className="mt-0.5 text-xs text-slate-500 leading-snug">{person.role}</p>
                           {person.bio && (
                             <p className="mt-2 text-xs leading-relaxed text-slate-400">{person.bio}</p>
                           )}
