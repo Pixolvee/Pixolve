@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import type { CaseStudy } from "@/data/caseStudies";
 
 /** Gambar cover kartu. Memprioritaskan thumbnail WebP terkompresi, fallback ke gambar asli jika gagal. */
@@ -69,14 +70,10 @@ export function ProjectCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 ${
-        compact
-          ? "rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-lg"
-          : "rounded-3xl border border-slate-200 hover:shadow-xl"
-      }`}
+      className="group relative flex flex-col overflow-hidden bg-white rounded-2xl border border-slate-200/90 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#002365]/30"
       data-testid={`portfolio-card-${index + 1}`}
     >
-      {/* Overlay link utama menutupi seluruh card */}
+      {/* Overlay link utama menutupi seluruh card agar mudah diklik */}
       <Link
         to={`/portofolio/${item.slug}`}
         aria-label={`Lihat studi kasus ${item.name}`}
@@ -84,8 +81,8 @@ export function ProjectCard({
         data-testid={`portfolio-link-${index + 1}`}
       />
 
-      {/* Gambar (bersih, tanpa teks di atasnya) */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+      {/* 16:9 Thumbnail Proyek Konsisten */}
+      <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
         <Cover
           src={originalSrc}
           thumbnail={thumbnailSrc}
@@ -94,38 +91,40 @@ export function ProjectCard({
         />
       </div>
 
-      {/* Bodi kartu: kategori, judul, penjelasan */}
-      <div className={`flex flex-1 flex-col ${compact ? "p-4 sm:p-5" : "p-6 sm:p-7"}`}>
-        {item.category && (
-          <div className="mb-2.5 flex items-center gap-2">
-            <span
-              className={`inline-flex items-center rounded-full bg-[#002365]/5 font-bold uppercase tracking-wider text-[#002365] ${
-                compact ? "px-2 py-0.5 text-[9px]" : "px-2.5 py-1 text-[10px]"
-              }`}
-            >
+      {/* Bodi kartu: kategori, tipe, judul, deskripsi, affordance */}
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        {/* Kategori & Tipe Proyek */}
+        <div className="mb-2.5 flex items-center justify-between gap-2 flex-wrap">
+          {item.category && (
+            <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#002365]">
               {item.category}
             </span>
-          </div>
-        )}
+          )}
+          {item.type && (
+            <span className="text-[11px] font-medium text-slate-500">
+              {item.type}
+            </span>
+          )}
+        </div>
+
+        {/* Judul Proyek */}
         <h3
-          className={`font-black tracking-tight text-[#002365] transition-colors group-hover:text-[#0e9f85] ${
-            compact
-              ? "line-clamp-2 min-h-[2.75rem] text-base leading-snug sm:text-lg"
-              : "text-xl sm:text-2xl"
-          }`}
+          className="font-heading font-bold text-[#002365] text-base sm:text-lg leading-snug tracking-tight transition-colors group-hover:text-[#0e9f85]"
           title={item.name}
         >
           {item.name}
         </h3>
-        <p
-          className={`text-slate-600 ${
-            compact
-              ? "mt-2 line-clamp-2 text-xs leading-relaxed"
-              : "mt-3 line-clamp-3 text-sm leading-6"
-          }`}
-        >
+
+        {/* Deskripsi Singkat 2-3 Baris Konsisten */}
+        <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-2 sm:line-clamp-3 flex-1">
           {item.textContent || item.text || item.text_content}
         </p>
+
+        {/* Affordance: Tombol / Tautan Lihat Studi Kasus */}
+        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm font-bold text-[#002365] transition-colors group-hover:text-[#0e9f85]">
+          <span>Lihat studi kasus</span>
+          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+        </div>
       </div>
     </article>
   );
