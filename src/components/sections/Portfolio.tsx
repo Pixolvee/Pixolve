@@ -34,13 +34,13 @@ export function Portfolio() {
           </Link>
         </div>
 
-        {/* Grid 4 Kartu Proyek */}
+        {/* Grid Kartu Proyek Responsif */}
         {isLoading ? (
           <div className="mt-8 flex items-center justify-center py-20">
             <Loader2 className="size-8 animate-spin text-[#002365]/40" />
           </div>
         ) : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-testid="portfolio-grid">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6" data-testid="portfolio-grid">
             {shown.map((item, index) => (
               <ProjectCard key={item.slug} item={item} index={index} compact />
             ))}

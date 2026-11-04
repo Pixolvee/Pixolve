@@ -16,12 +16,6 @@ export interface LeadSubmission {
   created_at: string;
 }
 
-export interface NewsletterSignup {
-  id: string;
-  email: string;
-  created_at: string;
-}
-
 // ─── Blog / Posts API types ────────────────────────────────────────────────
 
 /** Struktur author yang dikembalikan oleh backend Supabase */
@@ -108,4 +102,4 @@ export interface Project {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
+}

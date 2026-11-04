@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom"
 import {
   ArrowLeft, Check, ChevronLeft, ChevronRight, X,
   Calendar, Layers, Share2, ArrowRight, Building2, Loader2,
+  ZoomIn, ChevronDown, ChevronUp,
 } from "lucide-react"
 import { useCaseStudies, useCaseStudy } from "@/lib/hooks/useCaseStudies"
 import "@/styles/ase-study.css"
@@ -118,6 +119,7 @@ export default function CaseStudyPage() {
   const [open, setOpen] = useState<number | null>(null)
   const [failed, setFailed] = useState<Record<string, boolean>>({})
   const [progress, setProgress] = useState(0)
+  const [isGalleryExpanded, setIsGalleryExpanded] = useState(false)
 
   // ============================================================
   // GAMBAR UTAMA (di samping "Tentang proyek") → dari thumbnail
@@ -302,49 +304,84 @@ export default function CaseStudyPage() {
         </div>
       </section>
 
-      {/* GALERI — Grid 4 Kolom */}
+      {/* GALERI — Layout Masonry / Pinterest 4 Kolom dengan Hover Zoom & Expand Fade */}
       {n > 0 && (
-        <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-14 sm:py-16" data-testid="case-gallery">
+        <section id="galeri" className="scroll-mt-32 bg-[#eef3f9] py-12 sm:py-16" data-testid="case-gallery">
           <div className="mx-auto max-w-6xl px-5 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-amber-500">Eksplorasi Visual</p>
-                <h2 className="mt-1 font-heading text-2xl font-bold text-[#002365] sm:text-3xl">Galeri Antarmuka & Detail</h2>
-              </div>
-              <p className="max-w-md text-xs sm:text-sm text-slate-500 sm:text-right">
-                Klik gambar untuk memperbesar dan melihat detail antarmuka resolusi penuh.
-              </p>
+            <div className="border-b border-slate-200/80 pb-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-amber-500">Eksplorasi Visual</p>
+              <h2 className="mt-1 font-heading text-2xl font-bold text-[#002365] sm:text-3xl">Galeri Antarmuka & Detail</h2>
             </div>
 
-            {/* Grid: 1 kolom (mobile) → 2 (sm) → 3 (md) → 4 (lg ke atas) */}
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {gallery.map((g, i) => (
+            {/* Container Galeri dengan Efek Fade saat Belum Dibuka */}
+            <div className="relative mt-8">
+              <div
+                className={`columns-2 gap-4 sm:columns-2 md:columns-4 lg:columns-4 [column-fill:_balance] transition-all duration-500 overflow-hidden ${
+                  !isGalleryExpanded && n > 4
+                    ? "max-h-[580px] sm:max-h-[640px]"
+                    : "max-h-none"
+                }`}
+              >
+                {gallery.map((g, i) => (
+                  <div
+                    key={`${g.src}-${i}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setOpen(i)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(i) }
+                    }}
+                    className="group relative mb-4 break-inside-avoid flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0e9f85]/50 hover:shadow-xl sm:p-2.5"
+                    data-testid={`case-image-${i + 1}`}
+                  >
+                    <div className="relative overflow-hidden rounded-xl bg-slate-100">
+                      <img
+                        src={g.src}
+                        alt={g.alt}
+                        loading="lazy"
+                        onError={() => markFailed(g.src)}
+                        className="h-auto w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+
+                      {/* Hover Overlay Bersih dengan Ikon Zoom */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#002365]/35 opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover:opacity-100">
+                        <span className="grid size-11 place-items-center rounded-full bg-white/95 text-[#002365] shadow-lg transition-transform duration-300 group-hover:scale-110">
+                          <ZoomIn className="size-5" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Gradient Fade di Bawah saat Belum Di-expand */}
+              {!isGalleryExpanded && n > 4 && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#eef3f9] via-[#eef3f9]/85 to-transparent" />
+              )}
+
+              {/* Tombol Lihat Lebih Banyak dengan Panah ke Bawah */}
+              {n > 4 && (
                 <div
-                  key={`${g.src}-${i}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setOpen(i)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(i) }
-                  }}
-                  className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0e9f85]/40 hover:shadow-xl sm:p-3"
-                  data-testid={`case-image-${i + 1}`}
+                  className={`flex justify-center ${
+                    !isGalleryExpanded
+                      ? "absolute inset-x-0 bottom-4 z-20"
+                      : "mt-8"
+                  }`}
                 >
-                  <div className="flex-1 overflow-hidden rounded-xl bg-slate-100 aspect-square">
-                    <img
-                      src={g.src}
-                      alt={g.alt}
-                      loading="lazy"
-                      onError={() => markFailed(g.src)}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <div className="flex items-center justify-between px-1.5 pb-1 pt-3">
-                    <p className="truncate text-xs font-semibold text-[#002365] sm:text-sm">{g.alt}</p>
-                    <span className="shrink-0 text-[11px] font-semibold text-[#0e9f85] transition-colors group-hover:underline sm:text-xs">Perbesar</span>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsGalleryExpanded(!isGalleryExpanded)}
+                    className="group inline-flex items-center gap-2 rounded-full bg-[#002365] px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#002365]/20 transition-all hover:bg-[#002365]/90 hover:shadow-lg hover:scale-105 active:scale-95"
+                  >
+                    <span>{isGalleryExpanded ? "Tampilkan lebih sedikit" : "Lihat lebih banyak"}</span>
+                    {isGalleryExpanded ? (
+                      <ChevronUp className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                    ) : (
+                      <ChevronDown className="size-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                    )}
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </section>
@@ -390,49 +427,49 @@ export default function CaseStudyPage() {
         </section>
       )}
 
-      {/* RELATED CASE STUDIES */}
-      <section className="border-t border-slate-100 bg-[#f8fafc] px-5 py-14 lg:px-8" data-testid="case-related">
+      {/* RELATED CASE STUDIES (Kompak, Rapi & Hemat Ruang) */}
+      <section className="border-t border-slate-200/70 bg-[#f8fafc] px-5 py-7 sm:py-8 lg:px-8" data-testid="case-related">
         <div className="mx-auto max-w-6xl">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex items-center justify-between gap-4 border-b border-slate-200/60 pb-2.5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-amber-500">Eksplorasi Lain</p>
-              <h2 className="mt-1 font-heading text-2xl font-bold text-[#002365] sm:text-3xl">Karya Terkait Lainnya</h2>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500">Eksplorasi Lain</span>
+              <h3 className="text-sm sm:text-base font-bold text-[#002365]">Karya Terkait Lainnya</h3>
             </div>
-            <Link to="/portofolio" className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 transition-colors hover:text-[#002365]">
-              Lihat semua karya <ArrowRight className="size-4" />
+            <Link to="/portofolio" className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-[#002365]">
+              Lihat semua karya <ArrowRight className="size-3.5" />
             </Link>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {related.map((r) => (
               <Link
                 key={r.slug}
                 to={`/portofolio/${r.slug}`}
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:p-5"
+                className="group flex items-center justify-between gap-3 rounded-xl border border-slate-200/80 bg-white p-2.5 sm:p-3 transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-sm"
               >
-                <div className="flex min-w-0 items-center gap-4">
-                  <div className="size-20 shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:size-22">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="size-12 sm:size-14 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                     {r.image ? (
                       <img src={r.image} alt={r.name} loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     ) : (
                       <div className={`flex size-full items-center justify-center bg-gradient-to-br ${r.color}`}>
-                        <Building2 className="size-8 text-[#002365]" />
+                        <Building2 className="size-5 text-[#002365]" />
                       </div>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-amber-500">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-amber-500">
                       {r.type ?? r.category ?? "WEB APP"}
                     </span>
-                    <h3 className="mt-1 truncate text-base font-bold text-[#002365] transition-colors group-hover:text-amber-600 sm:text-lg">
+                    <h4 className="truncate text-xs sm:text-sm font-bold text-[#002365] transition-colors group-hover:text-amber-600">
                       {r.name}
-                    </h3>
-                    <p className="mt-1 line-clamp-1 text-xs text-slate-500">
+                    </h4>
+                    <p className="line-clamp-1 text-[11px] text-slate-500">
                       {r.textContent || r.text || r.text_content}
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="size-4.5 shrink-0 text-slate-400 transition-all group-hover:translate-x-1 group-hover:text-[#002365]" />
+                <ArrowRight className="size-4 shrink-0 text-slate-400 transition-all group-hover:translate-x-1 group-hover:text-[#002365]" />
               </Link>
             ))}
           </div>
