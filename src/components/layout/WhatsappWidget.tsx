@@ -8,7 +8,7 @@ export function WhatsappWidget() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-40" data-testid="whatsapp-floating-widget">
+    <div className="fixed bottom-20 right-5 z-40 lg:bottom-5" data-testid="whatsapp-floating-widget">
       <button type="button" onClick={() => setOpen((v) => !v)} className="relative flex size-14 items-center justify-center rounded-full bg-[#ffe400] text-[#002365] shadow-[0_12px_32px_rgba(0,35,101,.25)] transition-transform hover:scale-105" aria-label="Buka konsultasi WhatsApp">
         <MessageCircle className="size-6" />
         <span className="absolute -right-0.5 -top-0.5 size-3 rounded-full border-2 border-[#00153d] bg-[#0e9f85]" />

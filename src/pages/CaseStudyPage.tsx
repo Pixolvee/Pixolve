@@ -224,7 +224,7 @@ export default function CaseStudyPage() {
   const related = allCaseStudies.filter((c) => c.slug !== study.slug).slice(0, 2)
 
   return (
-    <main className="min-h-screen bg-white" data-testid="case-study-page">
+    <main className="min-h-screen bg-white pb-16 lg:pb-0" data-testid="case-study-page">
       {/* Reading progress */}
       <div className="fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent">
         <div className="h-full bg-[#ffe400] transition-[width] duration-150" style={{ width: `${progress}%` }} />

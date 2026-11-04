@@ -43,7 +43,7 @@ export default function ProjectsPage() {
   }, [activeCategoryId, caseStudies]);
 
   return (
-    <main className="min-h-screen bg-white" data-testid="projects-page">
+    <main className="min-h-screen bg-white pb-16 lg:pb-0" data-testid="projects-page">
       {/* Navbar pill */}
       {/* TODO: ganti dengan Navbar dari components/layout jika ingin konsisten dengan beranda */}
       <Header />
