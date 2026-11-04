@@ -14,7 +14,7 @@ export function Hero() {
             <a href="#portofolio" className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-4 text-sm font-bold text-white hover:border-[#ffe400] hover:text-[#ffe400]" data-testid="hero-portfolio-cta">Eksplor Portofolio <ArrowDownRight className="ml-2 size-4" /></a>
           </div>
         </div>
-        <div className="relative" data-testid="hero-product-visual">
+        <div className="relative hidden lg:block" data-testid="hero-product-visual">
           <div className="absolute -inset-4 rounded-[2rem] bg-[#ffe400]/10 blur-2xl" />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white/20 bg-[#00102f]/75 shadow-2xl backdrop-blur" data-testid="hero-code-card">
             <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
