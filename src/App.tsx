@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
+import { BottomNav } from "@/components/layout/BottomNav";
 import Home from "@/pages/Home";
 import BlogPost from "@/pages/BlogPost";
 import CaseStudyPage from "@/pages/CaseStudyPage";
@@ -16,6 +17,8 @@ export default function App() {
         <Route path="/portofolio/:slug" element={<CaseStudyPage />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
       </Routes>
+      {/* Mobile bottom navigation — hidden on lg+ screens */}
+      <BottomNav />
     </>
   );
 }

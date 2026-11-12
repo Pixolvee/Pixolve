@@ -18,7 +18,7 @@ export default function BlogPost() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-white" data-testid="article-page-loading">
+      <main className="min-h-screen bg-white pb-16 lg:pb-0" data-testid="article-page-loading">
         <header className="border-b border-slate-100">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
             <Link to="/" className="text-lg font-black tracking-tight text-[#002365]">Pixolve</Link>
@@ -63,7 +63,7 @@ export default function BlogPost() {
   }
 
   return (
-    <main className="min-h-screen bg-white" data-testid="article-page">
+    <main className="min-h-screen bg-white pb-16 lg:pb-0" data-testid="article-page">
       <ReadingProgress />
 
       <header className="border-b border-slate-100">
