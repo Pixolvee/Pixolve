@@ -111,25 +111,25 @@ function AnimatedCodeBlock() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-[1.75rem] border border-white/20 bg-[#00102f]/75 shadow-2xl backdrop-blur"
+      className="relative mx-auto w-full max-w-[460px] overflow-hidden rounded-2xl border border-white/20 bg-[#00102f]/75 shadow-2xl backdrop-blur lg:ml-auto"
       data-testid="hero-code-card"
     >
       {/* Title bar */}
-      <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div className="flex gap-1.5">
-          <span className="size-2.5 rounded-full bg-[#ff6b6b]" />
-          <span className="size-2.5 rounded-full bg-[#ffe400]" />
-          <span className="size-2.5 rounded-full bg-[#7de2ae]" />
+          <span className="size-2 rounded-full bg-[#ff6b6b]" />
+          <span className="size-2 rounded-full bg-[#ffe400]" />
+          <span className="size-2 rounded-full bg-[#7de2ae]" />
         </div>
-        <span className="font-mono text-[10px] text-blue-200">Pixolve / delivery-system</span>
-        <Code2 className="size-4 text-[#ffe400]" />
+        <span className="font-mono text-[9px] text-blue-200">Pixolve / delivery-system</span>
+        <Code2 className="size-3.5 text-[#ffe400]" />
       </div>
 
       {/* Code lines */}
-      <div className="p-5 font-mono text-xs leading-6 sm:p-7">
-        <div className="grid grid-cols-[auto_1fr] gap-4">
+      <div className="p-4 font-mono text-[11px] leading-5 sm:p-5">
+        <div className="grid grid-cols-[auto_1fr] gap-3">
           {/* Line numbers */}
-          <div className="select-none space-y-[0.95rem] text-blue-300/50">
+          <div className="select-none space-y-[0.72rem] text-blue-300/50">
             {CODE_LINES.map((_, i) => (
               <span
                 key={i}
@@ -141,7 +141,7 @@ function AnimatedCodeBlock() {
           </div>
 
           {/* Code */}
-          <div className="space-y-[0.95rem]">
+          <div className="space-y-[0.72rem]">
             {CODE_LINES.map((_, lineIdx) => {
               const isActive = lineIdx === completedLines && !done;
               const isVisible = lineIdx < totalDisplayedLines;
@@ -165,7 +165,7 @@ function AnimatedCodeBlock() {
       </div>
 
       {/* Status bar */}
-      <div className="flex items-center gap-2 border-t border-white/10 px-5 py-2.5">
+      <div className="flex items-center gap-2 border-t border-white/10 px-4 py-2">
         <span className="relative flex size-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7de2ae] opacity-50" />
           <span className="relative inline-flex size-2 rounded-full bg-[#7de2ae]" />
