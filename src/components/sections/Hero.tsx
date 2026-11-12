@@ -184,30 +184,30 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative isolate overflow-hidden bg-[linear-gradient(135deg,#00153d_0%,#002365_58%,#053082_100%)] pt-32 text-white sm:pt-40"
+      className="relative isolate overflow-hidden bg-[linear-gradient(135deg,#00153d_0%,#002365_58%,#053082_100%)] pt-24 text-white sm:pt-32"
       data-testid="hero-section"
     >
       <div className="absolute -right-32 top-8 -z-10 h-[520px] w-[520px] rounded-full bg-[#ffe400]/10 blur-3xl" />
       <div className="absolute bottom-0 left-0 -z-10 h-64 w-64 rounded-full bg-[#75a8ff]/10 blur-3xl" />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 sm:pb-28 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-32">
+      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-14 sm:pb-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-24">
         {/* Left copy */}
         <div data-testid="hero-copy">
           <h1
-            className="max-w-3xl font-heading text-4xl font-extrabold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl"
+            className="max-w-3xl font-heading text-3xl font-extrabold leading-[1.04] tracking-[-0.04em] sm:text-5xl lg:text-6xl"
             data-testid="hero-headline"
           >
             Bangun produk digital yang{" "}
             <span className="text-[#ffe400]">bergerak lebih cepat.</span>
           </h1>
           <p
-            className="mt-7 max-w-2xl text-base leading-8 text-blue-100 sm:text-lg"
+            className="mt-5 max-w-2xl text-sm leading-7 text-blue-100 sm:text-base"
             data-testid="hero-subheadline"
           >
             Pixolve adalah software house untuk tim yang ingin mengubah ide kompleks menjadi Web
             Platform, Mobile App, Data Science, dan UI/UX yang siap dipakai dan siap scale.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row" data-testid="hero-actions">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row" data-testid="hero-actions">
             <a
               href="#quote-form"
               className="inline-flex items-center justify-center rounded-full bg-[#ffe400] px-6 py-4 text-sm font-bold text-[#00153d] transition-transform hover:-translate-y-1"
@@ -226,7 +226,7 @@ export function Hero() {
         </div>
 
         {/* Right: animated code card */}
-        <div className="relative hidden lg:block" data-testid="hero-product-visual">
+        <div className="relative hidden lg:block animate-float-soft" data-testid="hero-product-visual">
           <div className="absolute -inset-4 rounded-[2rem] bg-[#ffe400]/10 blur-2xl" />
           <AnimatedCodeBlock />
         </div>
