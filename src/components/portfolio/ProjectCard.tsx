@@ -1,7 +1,24 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Globe } from "lucide-react";
 import type { CaseStudy } from "@/data/caseStudies";
+
+function GithubIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+      <path d="M9 18c-4.51 2-5-2-7-2" />
+    </svg>
+  );
+}
 
 /** Gambar cover kartu. Memprioritaskan thumbnail WebP terkompresi, fallback ke gambar asli jika gagal. */
 function Cover({
@@ -48,7 +65,7 @@ function Cover({
           setFailed(true);
         }
       }}
-      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
+      className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105 [backface-visibility:hidden] [transform:translateZ(0)]"
     />
   );
 }
@@ -68,9 +85,13 @@ export function ProjectCard({
     (typeof firstGalleryItem === "string" ? firstGalleryItem : firstGalleryItem?.src);
   const thumbnailSrc = item.thumbnail ?? (item.slug ? `/thumbnails/${item.slug}.webp` : undefined);
 
+  const badgeText = item.type || item.category || "Web App";
+  const githubLink = item.githubUrl || (item.slug ? `https://github.com/Pixolvee` : undefined);
+  const liveLink = item.demoUrl || item.url || (item.slug ? `/portofolio/${item.slug}` : undefined);
+
   return (
     <article
-      className="group relative flex flex-col overflow-hidden bg-white rounded-2xl border border-slate-200/90 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#002365]/30"
+      className="group relative flex flex-col overflow-hidden bg-white rounded-2xl border border-slate-200/90 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300"
       data-testid={`portfolio-card-${index + 1}`}
     >
       {/* Overlay link utama menutupi seluruh card agar mudah diklik */}
@@ -81,49 +102,74 @@ export function ProjectCard({
         data-testid={`portfolio-link-${index + 1}`}
       />
 
-      {/* 16:9 Thumbnail Proyek Konsisten */}
-      <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+      {/* Area Thumbnail Proyek dengan Badge & Icon Aksi */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
         <Cover
           src={originalSrc}
           thumbnail={thumbnailSrc}
           name={item.name}
           color={item.color}
         />
-      </div>
 
-      {/* Bodi kartu: kategori, tipe, judul, deskripsi, affordance */}
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        {/* Kategori & Tipe Proyek */}
-        <div className="mb-2.5 flex items-center justify-between gap-2 flex-wrap">
-          {item.category && (
-            <span className="inline-flex items-center rounded-full bg-[#002365]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#002365]">
-              {item.category}
-            </span>
-          )}
-          {item.type && (
-            <span className="text-[11px] font-medium text-slate-500">
-              {item.type}
-            </span>
-          )}
+        {/* Badge Tipe / Kategori di Pojok Kiri Atas */}
+        <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
+          <span className="inline-flex items-center rounded-full bg-black/65 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
+            {badgeText}
+          </span>
         </div>
 
+        {/* Tombol GitHub & Website di Pojok Kanan Atas */}
+        <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1.5">
+          {githubLink && (
+            <a
+              href={githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex size-8 items-center justify-center rounded-lg bg-black/65 text-white backdrop-blur-md shadow-sm transition-all hover:bg-black/85 hover:scale-105 active:scale-95"
+              aria-label={`Source code ${item.name} di GitHub`}
+              title="GitHub Repository"
+            >
+              <GithubIcon className="size-4" />
+            </a>
+          )}
+          {liveLink && (
+            <a
+              href={liveLink}
+              target={liveLink.startsWith("http") ? "_blank" : undefined}
+              rel={liveLink.startsWith("http") ? "noopener noreferrer" : undefined}
+              onClick={(e) => e.stopPropagation()}
+              className="flex size-8 items-center justify-center rounded-lg bg-black/65 text-white backdrop-blur-md shadow-sm transition-all hover:bg-black/85 hover:scale-105 active:scale-95"
+              aria-label={`Lihat website / demo ${item.name}`}
+              title="Live Demo"
+            >
+              <Globe className="size-4" />
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* Bodi kartu: Judul, deskripsi singkat, dan affordance Detail */}
+      <div className="flex flex-1 flex-col p-5">
         {/* Judul Proyek */}
         <h3
-          className="font-heading font-bold text-[#002365] text-base sm:text-lg leading-snug tracking-tight transition-colors group-hover:text-[#0e9f85]"
+          className="font-heading font-extrabold text-slate-900 text-lg leading-snug tracking-tight transition-colors group-hover:text-amber-600"
           title={item.name}
         >
           {item.name}
         </h3>
 
         {/* Deskripsi Singkat 2-3 Baris Konsisten */}
-        <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 line-clamp-2 sm:line-clamp-3 flex-1">
+        <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-500 line-clamp-2 flex-1">
           {item.textContent || item.text || item.text_content}
         </p>
 
-        {/* Affordance: Tombol / Tautan Lihat Studi Kasus */}
-        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm font-bold text-[#002365] transition-colors group-hover:text-[#0e9f85]">
-          <span>Lihat studi kasus</span>
-          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+        {/* Footer: Garis Pemisah & Teks Detail di Kanan Bawah */}
+        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-end">
+          <span className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-amber-500 transition-colors group-hover:text-amber-600">
+            Detail
+            <ArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+          </span>
         </div>
       </div>
     </article>

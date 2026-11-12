@@ -85,6 +85,7 @@ export interface CaseStudy {
 
   demoUrl?: string
   githubUrl?: string
+  url?: string
 }
 
 export const caseStudies: CaseStudy[] = []
