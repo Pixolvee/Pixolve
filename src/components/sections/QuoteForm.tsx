@@ -141,16 +141,16 @@ export function QuoteForm() {
             Konsultasi Proyek
           </span>
           <h2 className="mt-3 font-heading text-2xl font-extrabold leading-tight tracking-tight text-[#002365] sm:text-3xl lg:text-4xl" data-testid="quote-title">
-            Diskusikan kebutuhan produk digital Anda.
+            Punya proyek digital? Mari kita wujudkan bersama.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[#002365]/80 sm:text-base" data-testid="quote-body">
-            Isi formulir singkat ini. Tim kami siap berdiskusi untuk memahami tujuan produk Anda dan memberikan rekomendasi solusi teknis yang tepat.
+            Ceritakan kebutuhan Anda lewat formulir ini. Tim Pixolve akan mempelajarinya dan menghubungi Anda dengan rekomendasi solusi yang sesuai — tanpa komitmen di awal.
           </p>
           <div className="mt-6 space-y-3 text-sm font-medium text-[#002365]" data-testid="quote-benefits">
             {[
-              "Respons cepat maksimal 1×24 jam kerja",
-              "Tersedia NDA untuk menjaga kerahasiaan ide Anda",
-              "Estimasi ruang lingkup (scope) yang transparan",
+              "Respons dalam 1×24 jam hari kerja",
+              "Konsultasi awal gratis, tanpa syarat",
+              "Estimasi scope & biaya yang transparan",
             ].map((benefit) => (
               <p key={benefit} className="flex items-start gap-2.5">
                 <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#002365]/10">

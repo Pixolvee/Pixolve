@@ -88,7 +88,7 @@ export function Team() {
             className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-500 max-w-xl mx-auto"
             data-testid="section-body-tim-kami"
           >
-            Setiap solusi dikerjakan langsung oleh praktisi berpengalaman di bidang strategi produk, desain, dan arsitektur teknologi tanpa perantara.
+            Kami bukan agensi yang mendelegasikan ke pihak ketiga. Setiap proyek dikerjakan langsung oleh tim internal Pixolve yang ahli di bidangnya — dari strategi, desain, hingga engineering.
           </p>
         </div>
 
