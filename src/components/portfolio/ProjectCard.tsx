@@ -85,9 +85,12 @@ export function ProjectCard({
     (typeof firstGalleryItem === "string" ? firstGalleryItem : firstGalleryItem?.src);
   const thumbnailSrc = item.thumbnail ?? (item.slug ? `/thumbnails/${item.slug}.webp` : undefined);
 
-  const badgeText = item.type || item.category || "Web App";
-  const githubLink = item.githubUrl || (item.slug ? `https://github.com/Pixolvee` : undefined);
-  const liveLink = item.demoUrl || item.url || (item.slug ? `/portofolio/${item.slug}` : undefined);
+  // Badge hanya tampilkan kategori utama (category lebih deskriptif dari type)
+  const badgeText = item.category || item.type || null;
+  // Hanya tampilkan icon GitHub jika URL memang tersedia di data
+  const githubLink = item.githubUrl || null;
+  // Hanya tampilkan icon Live jika URL demo/website tersedia
+  const liveLink = item.demoUrl || item.url || null;
 
   return (
     <article
@@ -111,12 +114,14 @@ export function ProjectCard({
           color={item.color}
         />
 
-        {/* Badge Tipe / Kategori di Pojok Kiri Atas */}
-        <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
-          <span className="inline-flex items-center rounded-full bg-black/65 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
-            {badgeText}
-          </span>
-        </div>
+        {/* Badge Kategori di Pojok Kiri Atas — hanya tampil jika ada kategori */}
+        {badgeText && (
+          <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
+            <span className="inline-flex items-center rounded-full bg-black/65 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
+              {badgeText}
+            </span>
+          </div>
+        )}
 
         {/* Tombol GitHub & Website di Pojok Kanan Atas */}
         <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1.5">
